@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'apps.greatkart',
     'apps.category',
     'apps.accounts',
+    'apps.store',
 ]
 
 MIDDLEWARE = [
