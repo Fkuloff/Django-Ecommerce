@@ -129,7 +129,9 @@
                     </header><!-- sect-heading -->
 
                     <div class="row">
+
                         {% for item in products %}
+
                             <div class="col-md-4">
                                 <figure class="card card-product-grid">
                                     <div class="img-wrap">
@@ -137,7 +139,7 @@
                                     </div> <!-- img-wrap.// -->
                                     <figcaption class="info-wrap">
                                         <div class="fix-height">
-                                            <a href="./product-detail.html" class="title">{{ item.product_name }}</a>
+                                            <a href="{{ item.get_url }}" class="title">{{ item.product_name }}</a>
                                             <div class="price-wrap mt-2">
                                                 <span class="price">{{ item.price }}$</span>
                                             </div> <!-- price-wrap.// -->
@@ -146,7 +148,9 @@
                                     </figcaption>
                                 </figure>
                             </div> <!-- col.// -->
+
                         {% endfor %}
+
                     </div> <!-- row end.// -->
 
 
