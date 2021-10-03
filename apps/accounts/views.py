@@ -15,6 +15,8 @@ from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
+import requests
+
 
 def register(request):
     if request.method == "POST":
@@ -105,7 +107,21 @@ def login(request):
                 pass
             auth.login(request, user)
             messages.success(request, 'You are now logged in')
-            return redirect('dashboard')
+
+            url = request.META.get('HTTP_REFERER')
+            try:
+
+                query = requests.utils.urlparse(url).query
+                print('query ->', query)
+                # next=/cart/checkout/
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+
+            except:
+                return redirect('dashboard')
+
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
