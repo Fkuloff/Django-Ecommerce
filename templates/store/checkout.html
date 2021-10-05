@@ -12,7 +12,7 @@
                 <aside class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
-                            <form action="" method="POST">
+                            <form action="{% url 'place_order' %}" method="POST">
                                 {% csrf_token %}
                                 <h4 class="card-title mb-4">Billing address</h4>
                                 <div class="form-row">
