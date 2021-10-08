@@ -1,5 +1,4 @@
-import json
-
+from apps.store.models import Product
 from django.shortcuts import render, redirect
 from apps.cart.models import CartItem
 from .forms import OrderForm
@@ -43,6 +42,14 @@ def payments(request):
         order_product = OrderProduct.objects.get(id=order_product.id)
         order_product.variations.set(product_variations)
         order_product.save()
+
+        #
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+
+    #
+    CartItem.objects.filter(user=request.user).delete()
 
     return render(request, 'orders/payments.html')
 
