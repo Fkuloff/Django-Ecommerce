@@ -145,6 +145,7 @@
 
         var csrftoken = getCookie('csrftoken');
         var payment_method = 'PayPal';
+        var redirect_url = '{% url 'order_complete' %}'
 
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
@@ -192,7 +193,7 @@
                                 return response.json();
                             })
                             .then((data) => {
-                                console.log(data);
+                                window.location.href = redirect_url + '?order_number=' + data.order_number+'&payment_id='+data.payment_id;
                             });
                     }
 

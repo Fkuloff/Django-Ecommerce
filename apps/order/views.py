@@ -1,6 +1,6 @@
 from django.core.mail import EmailMessage
+from django.http import JsonResponse
 from django.template.loader import render_to_string
-
 from apps.store.models import Product
 from django.shortcuts import render, redirect
 from apps.cart.models import CartItem
@@ -54,17 +54,25 @@ def payments(request):
     #
     CartItem.objects.filter(user=request.user).delete()
 
-    # User activation
-    mail_subject = 'Thank you for your order!'
-    message = render_to_string('orders/order_received_email.html', {
-        'user': request.user,
-        'order': order,
-    })
-    to_email = request.user.email
-    send_email = EmailMessage(mail_subject, message, to=[to_email])
-    send_email.send()
+    #
+    try:
+        mail_subject = 'Thank you for your order!'
+        message = render_to_string('orders/order_received_email.html', {
+            'user': request.user,
+            'order': order,
+        })
+        to_email = request.user.email
+        send_email = EmailMessage(mail_subject, message, to=[to_email])
+        send_email.send()
+    except Exception as e:
+        print(e)
 
-    return render(request, 'orders/payments.html')
+    data = {
+        'order_number': order.order_number,
+        'payment_id': payment.payment_id,
+    }
+
+    return JsonResponse(data)
 
 
 def place_order(request, total=0, quantity=0):
@@ -128,3 +136,7 @@ def place_order(request, total=0, quantity=0):
             return render(request, 'orders/payments.html', context)
         else:
             return redirect('checkout')
+
+
+def order_complete(request):
+    return render(request, 'orders/order_complete.html')
