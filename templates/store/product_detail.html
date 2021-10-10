@@ -56,9 +56,9 @@
                                 {% if single_product.stock <= 0 %}
                                     <h5 class="">Out of Stock</h5>
                                 {% else %}
-                                        <button class="btn  btn-primary" type="submit"> <span
-                                                class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>
-                                        </button>
+                                    <button class="btn  btn-primary" type="submit"> <span
+                                            class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>
+                                    </button>
                                 {% endif %}
 
                             </article> <!-- product-info-aside .// -->
@@ -78,6 +78,36 @@
                         <h3>Customer Reviews </h3>
 
                     </header>
+
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <h5>Write your review</h5>
+                        <div class="mb-5">
+                            <label for="">How do you rate this product?</label>
+                            <br>
+                            <div class="rate">
+                                <input type="radio" name="rating" id="rating5" value="5" required>
+                                <label for="rating5" title="5"></label>
+                                <input type="radio" name="rating" id="rating4" value="4" required>
+                                <label for="rating4" title="4"></label>
+                                <input type="radio" name="rating" id="rating3" value="3" required>
+                                <label for="rating3" title="3"></label>
+                                <input type="radio" name="rating" id="rating2" value="2" required>
+                                <label for="rating2" title="2"></label>
+                                <input type="radio" name="rating" id="rating1" value="1" required>
+                                <label for="rating1" title="1"></label>
+                            </div>
+
+                            Review Title:
+                            <input type="text" class="form-control" name="subject">
+                            <br>
+                            Review:
+                            <textarea name="review" class="form-control" id="" rows="4"></textarea>
+                            <br>
+                            <input type="submit" class="btn btn-primary" value="Submit Review">
+
+                        </div>
+                    </form>
 
                     <article class="box mb-3">
                         <div class="icontext w-100">
