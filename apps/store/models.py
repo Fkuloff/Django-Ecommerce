@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.urls import reverse
 from apps.category.models import Category
 from apps.accounts.models import Account
@@ -22,6 +23,13 @@ class Product(models.Model):
 
     def get_url(self):
         return reverse('product_detail', args=[self.category.slug, self.slug])
+
+    def average_review(self):
+        reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(average=Avg('rating'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = float(reviews['average'])
+        return avg
 
     class Meta:
         verbose_name = 'Product'
