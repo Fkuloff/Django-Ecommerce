@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from django.urls import reverse
 from apps.category.models import Category
 from apps.accounts.models import Account
@@ -30,6 +30,13 @@ class Product(models.Model):
         if reviews['average'] is not None:
             avg = float(reviews['average'])
         return avg
+
+    def count_review(self):
+        reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(count=Count('id'))
+        count = 0
+        if reviews['count'] is not None:
+            count = int(reviews['count'])
+        return count
 
     class Meta:
         verbose_name = 'Product'
