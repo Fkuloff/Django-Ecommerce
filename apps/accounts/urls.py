@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import register, login, logout, activate, dashboard, forgotPassword, resetpassword_validate, resetPassword, \
-    my_orders
+    my_orders, edit_profile
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('resetPassword/', resetPassword, name='resetPassword'),
 
     path('my_orders/', my_orders, name='my_orders'),
+    path('edit_profile/', edit_profile, name='edit_profile')
 
 ]
