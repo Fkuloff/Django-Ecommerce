@@ -77,7 +77,8 @@ class UserProfile(models.Model):
     address_line_1 = models.CharField(max_length=50, blank=True)
     address_line_2 = models.CharField(max_length=50, blank=True)
 
-    profile_avatar = models.ImageField(blank=True, upload_to='userprofile')
+    profile_avatar = models.ImageField(blank=True, upload_to='userprofile',
+                                       default='userprofile/img_avatar.png')
 
     country = models.CharField(max_length=50, blank=True)
     state = models.CharField(max_length=50, blank=True)

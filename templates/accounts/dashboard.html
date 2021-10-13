@@ -26,7 +26,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Total Orders</h5>
                                             <h4>{{ orders_count }}</h4>
-                                            <a href="">View Orders</a>
+                                            <a href="{% url 'my_orders' %}">View Orders</a>
                                         </div>
                                     </div>
                                 </div>
@@ -34,7 +34,11 @@
                                 <div class="col-md-6">
                                     <div class="card" style="text-align: center">
                                         <div class="card-body">
-                                            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar mb-3" width="50" height="50" style="border-radius: 50%">
+                                            {% if user_profile.profile_avatar %}
+                                                <img src="{{ user_profile.profile_avatar.url }}" alt="Avatar"
+                                                     class="avatar mb-3" width="50" height="50"
+                                                     style="border-radius: 50%">
+                                            {% endif %}
                                             <p>{{ user.email }}</p>
                                             <p>{{ user.phone_number }}</p>
                                         </div>

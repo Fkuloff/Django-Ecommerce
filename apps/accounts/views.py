@@ -7,7 +7,7 @@ from .forms import RegistrationForm, UserForm, UserProfileForm
 from .models import Account, UserProfile
 from apps.cart.models import Cart, CartItem
 from apps.cart.views import _cart_id
-from apps.order.models import Order
+from apps.order.models import Order, OrderProduct
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -159,8 +159,12 @@ def activate(request, uidb64, token):
 def dashboard(request):
     order = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = order.count()
+
+    user_profile = UserProfile.objects.get(user_id=request.user.id)
+
     context = {
         'orders_count': orders_count,
+        'user_profile': user_profile,
     }
     return render(request, 'accounts/dashboard.html', context)
 
@@ -283,3 +287,20 @@ def change_password(request):
             return redirect('change_password')
 
     return render(request, 'accounts/change_password.html')
+
+
+@login_required(login_url='login')
+def order_detail(request, order_id):
+    order_products = OrderProduct.objects.filter(order__order_number=order_id)
+    order = Order.objects.get(order_number=order_id)
+
+    subtotal = 0
+    for i in order_products:
+        subtotal += i.product_price * i.quantity
+
+    context = {
+        'order_products': order_products,
+        'order': order,
+        'subtotal': subtotal,
+    }
+    return render(request, 'accounts/order_detail.html', context)
