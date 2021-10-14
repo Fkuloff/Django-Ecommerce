@@ -134,21 +134,37 @@
 
                     <div class="row">
                         {% if products %}
-                            {% for item in products %}
+                            {% for product in products %}
 
                                 <div class="col-md-4">
                                     <figure class="card card-product-grid">
                                         <div class="img-wrap">
-                                            <img src="{{ item.images.url }}">
+                                            <img src="{{ product.images.url }}">
                                         </div> <!-- img-wrap.// -->
                                         <figcaption class="info-wrap">
                                             <div class="fix-height">
-                                                <a href="{{ item.get_url }}" class="title">{{ item.product_name }}</a>
-                                                <div class="price-wrap mt-2">
-                                                    <span class="price">{{ item.price }}$</span>
+                                                <a href="{{ product.get_url }}"
+                                                   class="title">{{ product.product_name }}</a>
+
+                                                <div class="rating-star">
+                                                    <span>
+                                                        <i class="fa fa-lg fa-star{% if product.average_review < 0.5 %}-o{% elif product.average_review >= 0.5 and product.average_review <= 1 %}-half-o {% endif %}"
+                                                           aria-hidden="true"></i>
+                                                        <i class="fa fa-lg fa-star{% if product.average_review < 1.5 %}-o{% elif product.average_review >= 1.5 and product.average_review <= 2 %}-half-o {% endif %}"
+                                                           aria-hidden="true"></i>
+                                                        <i class="fa fa-lg fa-star{% if product.average_review < 2.5 %}-o{% elif product.average_review >= 2.5 and product.average_review <= 3 %}-half-o {% endif %}"
+                                                           aria-hidden="true"></i>
+                                                        <i class="fa fa-lg fa-star{% if product.average_review < 3.5 %}-o{% elif product.average_review >= 3.5 and product.average_review <= 4 %}-half-o {% endif %}"
+                                                           aria-hidden="true"></i>
+                                                        <i class="fa fa-lg fa-star{% if product.average_review < 4.5 %}-o{% elif product.average_review >= 4.5 and product.average_review <= 5 %}-half-o {% endif %}"
+                                                           aria-hidden="true"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="price-wrap">
+                                                    <span class="price">{{ product.price }}$</span>
                                                 </div> <!-- price-wrap.// -->
                                             </div>
-                                            <a href="{{ item.get_url }}" class="btn btn-block btn-primary">View
+                                            <a href="{{ product.get_url }}" class="btn btn-block btn-primary">View
                                                 Details </a>
                                         </figcaption>
                                     </figure>
