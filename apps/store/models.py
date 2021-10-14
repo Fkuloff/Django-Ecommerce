@@ -8,11 +8,15 @@ from apps.accounts.models import Account
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(unique=True)
+
     description = models.TextField(blank=True)
     price = models.IntegerField()
+
     images = models.ImageField(upload_to='photos/products')
     stock = models.IntegerField()
+
     is_available = models.BooleanField(default=True)
+
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
