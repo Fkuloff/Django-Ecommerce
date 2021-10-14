@@ -10,12 +10,23 @@
                 <div class="row no-gutters">
                     <aside class="col-md-6">
                         <article class="gallery-wrap">
-                            <div class="img-big-wrap">
-                                <a href="#"><img src="{{ single_product.images.url }}"></a>
+                            <div class="img-big-wrap mainImage">
+                                    <img class="mx-auto d-block" src="{{ single_product.images.url }}">
                             </div> <!-- img-big-wrap.// -->
 
                         </article> <!-- gallery-wrap .end// -->
+                        <ul class="thumb">
+                            <li>
+                              <a href="{{ single_product.images.url }}" target="mainImage"><img src="{{ single_product.images.url }}"
+                                                                                        alt="Product Image"></a>
+                                {% for i in product_gallery %}
+                                    <a href="{{ i.image.url }}" target="mainImage"><img src="{{ i.image.url }}"
+                                                                                        alt="Product Image"></a>
+                                {% endfor %}
+                            </li>
+                        </ul>
                     </aside>
+
                     <main class="col-md-6 border-left">
 
                         <form action="{% url 'add_cart' single_product.id %}" method="POST">
@@ -40,7 +51,7 @@
                                             <i class="fa fa-lg fa-star{% if single_product.average_review < 4.5 %}-o{% elif single_product.average_review >= 4.5 and single_product.average_review <= 5 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
                                         </span>
-                                    <span>{{ single_product.count_review }} reviews</span>
+                                        <span>{{ single_product.count_review }} reviews</span>
                                     </div>
                                 </div>
                                 <p>{{ single_product.description }}</p>
@@ -221,4 +232,15 @@
 
         </div> <!-- container .//  -->
     </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.thumb a').click(function (e) {
+                e.preventDefault();
+                $('.mainImage img').attr('src', $(this).attr('href'));
+            })
+        })
+    </script>
+
 {% endblock %}
