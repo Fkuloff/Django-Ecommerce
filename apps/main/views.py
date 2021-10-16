@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from apps.store.models import Product, Variation, ProductGallery
-from apps.store.models import ReviewRating
 
 
 def home(request):

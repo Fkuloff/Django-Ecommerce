@@ -1,13 +1,9 @@
-from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ReviewRating, ProductGallery, Variation, Size, Specification
-from apps.category.models import Category
-from apps.cart.models import CartItem
-from apps.cart.views import _cart_id
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from .forms import ReviewForm
+from django.shortcuts import render
+from .models import Product, ProductGallery, Variation, Size, Specification
+from django.core.paginator import Paginator
 from apps.order.models import OrderProduct
+from apps.review.models import ReviewRating
 
 
 def store(request, category_slug=None):
@@ -62,7 +58,7 @@ def product_detail(request, product_slug, variation_vendor_code):
         order_product = None
 
     # get reviews
-    reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
+    # reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
 
     context = {
         'single_product': single_product,
@@ -70,7 +66,7 @@ def product_detail(request, product_slug, variation_vendor_code):
         'variation': variation,
         'sizes': sizes,
         'order_product': order_product,
-        'reviews': reviews,
+        # 'reviews': reviews,
         'specifications': specifications,
         'product_gallery': product_gallery,
     }
@@ -91,28 +87,3 @@ def search(request):
     }
 
     return render(request, 'store/store.html', context)
-
-
-def submit_review(request, product_id):
-    url = request.META.get('HTTP_REFERER')
-    if request.method == "POST":
-        try:
-            reviews = ReviewRating.objects.get(user__id=request.user.id, product__id=product_id)
-            form = ReviewForm(request.POST, instance=reviews)  # instance update review
-            form.save()
-            messages.success(request, 'Thank you for review!')
-            return redirect(url)
-        except ReviewRating.DoesNotExist:
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                data = ReviewRating()
-                data.subject = form.cleaned_data['subject']
-                data.review = form.cleaned_data['review']
-                data.rating = form.cleaned_data['rating']
-
-                data.ip = request.META.get('REMOTE_ADDR')
-                data.product_id = product_id
-                data.user_id = request.user.id
-                data.save()
-                messages.success(request, 'Thank you for review!')
-                return redirect(url)
