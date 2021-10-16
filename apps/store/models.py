@@ -6,14 +6,12 @@ from apps.accounts.models import Account
 
 
 class Product(models.Model):
-    product_name = models.CharField(max_length=200, unique=True)
+    product_name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(unique=True)
 
+    composition = models.TextField(max_length=64, blank=True)
     description = models.TextField(blank=True)
-    price = models.IntegerField()
-
-    images = models.ImageField(upload_to='photos/products')
-    stock = models.IntegerField()
+    seller = models.CharField(max_length=64, blank=True)
 
     is_available = models.BooleanField(default=True)
 
@@ -46,31 +44,23 @@ class Product(models.Model):
         verbose_name = 'Product'
 
 
-class VariationManager(models.Manager):
-    def colors(self):
-        return super(VariationManager, self).filter(variation_category='color', is_active=True)
-
-    def sizes(self):
-        return super(VariationManager, self).filter(variation_category='size', is_active=True)
-
-
-variation_category_choices = {
-    ('color', 'color'),
-    ('size', 'size'),
-}
+class Specification(models.Model):
+    title = models.CharField(max_length=64)
+    value = models.CharField(max_length=64)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
 class Variation(models.Model):
+    vendor_code = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    color = models.CharField(max_length=64)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    variation_category = models.CharField(max_length=100, choices=variation_category_choices)
-    variation_value = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
-    created_date = models.DateTimeField(auto_now=True)
 
-    objects = VariationManager()
 
-    def __str__(self):
-        return self.variation_value
+class Size(models.Model):
+    size_number = models.CharField(max_length=4)
+    quantity = models.PositiveIntegerField()
+    variation = models.ForeignKey(Variation, on_delete=models.CASCADE)
 
 
 class ReviewRating(models.Model):
@@ -91,11 +81,11 @@ class ReviewRating(models.Model):
 
 
 class ProductGallery(models.Model):
-    product = models.ForeignKey(Product, default=None, on_delete=models.CASCADE)
+    variation = models.ForeignKey(Variation, default=None, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='store/products', max_length=255)
 
     def __str__(self):
-        return self.product.product_name
+        return self.variation.vendor_code
 
     class Meta:
         verbose_name = 'product gallery'

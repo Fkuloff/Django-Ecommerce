@@ -1,28 +1,50 @@
 from django.contrib import admin
-from .models import Product, Variation, ReviewRating, ProductGallery
+from .models import *
 import admin_thumbnails
+import nested_admin
 
 
 @admin_thumbnails.thumbnail('image')
-class ProductGalleryInline(admin.StackedInline):
+class ProductGalleryInline(nested_admin.NestedTabularInline):
     model = ProductGallery
     extra = 1
     list_display = ''
 
 
-class ProductAdmin(admin.ModelAdmin):
+class SpecificationsInline(nested_admin.NestedTabularInline):
+    model = Specification
+    extra = 5
+
+
+class SizesInline(nested_admin.NestedTabularInline):
+    model = Size
+    extra = 5
+
+
+class VariationsInline(nested_admin.NestedStackedInline):
+    model = Variation
+    extra = 1
+    inlines = [SizesInline, ProductGalleryInline]
+
+
+class ProductAdmin(nested_admin.NestedModelAdmin):
     prepopulated_fields = {'slug': ('product_name',)}
-    list_display = ('product_name', 'stock', 'price', 'created_date', 'modified_date', 'is_available')
-    inlines = [ProductGalleryInline, ]
+    inlines = [SpecificationsInline, VariationsInline]
+    list_display = ('product_name', 'seller', 'created_date', 'is_available')
 
 
-class VariationAdmin(admin.ModelAdmin):
-    list_display = ('product', 'variation_category', 'variation_value', 'is_active', 'created_date')
-    list_editable = ('is_active',)
-    list_filter = ('product', 'variation_category', 'variation_value')
+# class VariationAdmin(admin.ModelAdmin):
+#     list_display = ('product', 'variation_category', 'variation_value', 'is_active', 'created_date')
+#     list_editable = ('is_active',)
+#     list_filter = ('product', 'variation_category', 'variation_value')
 
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Variation, VariationAdmin)
-admin.site.register(ReviewRating)
-admin.site.register(ProductGallery)
+# admin.site.register(Specification)
+# admin.site.register(Variation)
+# admin.site.register(Size)
+# admin.site.register(ProductGallery)
+
+# admin.site.register(Variation, VariationAdmin)
+# admin.site.register(ReviewRating)
+# admin.site.register(ProductGallery)
