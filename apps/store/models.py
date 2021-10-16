@@ -29,19 +29,9 @@ class Product(models.Model):
         return reverse('product_detail',
                        kwargs={"variation_vendor_code": variation_vendor_code, 'product_slug': self.slug})
 
-    # def average_review(self):
-    #     reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(average=Avg('rating'))
-    #     avg = 0
-    #     if reviews['average'] is not None:
-    #         avg = float(reviews['average'])
-    #     return avg
 
-    # def count_review(self):
-    #     reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(count=Count('id'))
-    #     count = 0
-    #     if reviews['count'] is not None:
-    #         count = int(reviews['count'])
-    #     return count
+
+
 
     class Meta:
         verbose_name = 'Product'
@@ -64,6 +54,20 @@ class Variation(models.Model):
 
     def __str__(self):
         return self.vendor_code
+
+    def average_review(self):
+        reviews = ReviewRating.objects.filter(variation=self, status=True).aggregate(average=Avg('rating'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = float(reviews['average'])
+        return avg
+
+    def count_review(self):
+        reviews = ReviewRating.objects.filter(variation=self, status=True).aggregate(count=Count('id'))
+        count = 0
+        if reviews['count'] is not None:
+            count = int(reviews['count'])
+        return count
 
 
 class Size(models.Model):

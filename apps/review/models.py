@@ -12,6 +12,7 @@ class ReviewRating(models.Model):
 
     ip = models.CharField(max_length=20, blank=True)
     status = models.BooleanField(default=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

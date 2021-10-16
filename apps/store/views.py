@@ -58,7 +58,9 @@ def product_detail(request, product_slug, variation_vendor_code):
         order_product = None
 
     # get reviews
-    # reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
+
+    reviews = ReviewRating.objects.filter(variation=variation, status=True)
+
 
     context = {
         'single_product': single_product,
@@ -66,7 +68,7 @@ def product_detail(request, product_slug, variation_vendor_code):
         'variation': variation,
         'sizes': sizes,
         'order_product': order_product,
-        # 'reviews': reviews,
+        'reviews': reviews,
         'specifications': specifications,
         'product_gallery': product_gallery,
     }
