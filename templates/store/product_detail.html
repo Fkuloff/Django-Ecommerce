@@ -15,7 +15,7 @@
 
                                 {% for photo in product_gallery %}
                                     <div class="carousel-item {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}">
-                                        <img class="d-block mx-auto" src="{{ photo.image.url }}">
+                                        <img class="d-block mx-auto" width="80%" style="border-radius: 2%" src="{{ photo.image.url }}">
                                     </div>
                                 {% endfor %}
 
@@ -118,7 +118,7 @@
             <br>
 
             <div class="row">
-                <div class="col-md-9">
+                <div class="container col-md-9">
 
                     <form action="{% url 'submit_review' single_product.id %}" method="POST">
                         {% csrf_token %}

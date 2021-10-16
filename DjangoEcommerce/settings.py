@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 
     'nested_admin',
 
-    'apps.greatkart',
+    'apps.main',
     'apps.category',
     'apps.accounts',
     'apps.store',
