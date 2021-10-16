@@ -8,7 +8,7 @@ urlpatterns = [
                   path('_nested_admin/', include('nested_admin.urls')),
 
                   path('', include('apps.greatkart.urls')),
-                  path('store/', include('apps.store.urls')),
+                  path('catalog/', include('apps.store.urls')),
                   path('cart/', include('apps.cart.urls')),
                   path('accounts/', include('apps.accounts.urls')),
                   path('orders/', include('apps.order.urls')),

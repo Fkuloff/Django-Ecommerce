@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ReviewRating, ProductGallery
+from .models import Product, ReviewRating, ProductGallery, Variation, Size, Specification
 from apps.category.models import Category
 from apps.cart.models import CartItem
 from apps.cart.views import _cart_id
@@ -14,22 +14,22 @@ def store(request, category_slug=None):
     categories = None
     products = None
 
-    if category_slug is not None:
-        categories = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(category=categories, is_available=True)
-        product_count = products.count()
+    # if category_slug is not None:
+    #     categories = get_object_or_404(Category, slug=category_slug)
+    #     products = Product.objects.filter(category=categories, is_available=True)
+    #     product_count = products.count()
+    #
+    #     paginator = Paginator(products, 10)
+    #     page = request.GET.get('page')
+    #     paged_products = paginator.get_page(page)
+    #
+    # else:
+    products = Product.objects.filter(is_available=True).order_by('-id')
+    product_count = products.count()
 
-        paginator = Paginator(products, 10)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
-
-    else:
-        products = Product.objects.filter(is_available=True).order_by('-id')
-        product_count = products.count()
-
-        paginator = Paginator(products, 10)
-        page = request.GET.get('page')
-        paged_products = paginator.get_page(page)
+    paginator = Paginator(products, 10)
+    page = request.GET.get('page')
+    paged_products = paginator.get_page(page)
 
     context = {
         'products': paged_products,
@@ -38,11 +38,18 @@ def store(request, category_slug=None):
     return render(request, 'store/store.html', context)
 
 
-def product_detail(request, category_slug, product_slug):
+def product_detail(request, product_slug, variation_vendor_code):
     try:
-        single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
-        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),
-                                          product=single_product).exists()  # True/False
+        single_product = Product.objects.get(slug=product_slug)
+        specifications = Specification.objects.filter(product=single_product)
+
+        variation = Variation.objects.get(vendor_code=variation_vendor_code)
+
+        product_gallery = ProductGallery.objects.filter(variation=variation)
+        sizes = Size.objects.filter(variation=variation)
+
+        # in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),
+        #                                   product=single_product).exists()  # True/False
     except Exception as e:
         raise e
 
@@ -57,13 +64,14 @@ def product_detail(request, category_slug, product_slug):
     # get reviews
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
 
-    product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
-
     context = {
         'single_product': single_product,
-        'in_cart': in_cart,
+        # 'in_cart': in_cart,
+        'variation': variation,
+        'sizes': sizes,
         'order_product': order_product,
         'reviews': reviews,
+        'specifications': specifications,
         'product_gallery': product_gallery,
     }
 

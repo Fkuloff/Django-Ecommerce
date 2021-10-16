@@ -18,12 +18,12 @@ class SpecificationsInline(nested_admin.NestedTabularInline):
 
 class SizesInline(nested_admin.NestedTabularInline):
     model = Size
-    extra = 5
+    extra = 2
 
 
 class VariationsInline(nested_admin.NestedStackedInline):
     model = Variation
-    extra = 1
+    extra = 0
     inlines = [SizesInline, ProductGalleryInline]
 
 

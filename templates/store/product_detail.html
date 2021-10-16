@@ -9,36 +9,47 @@
             <div class="card">
                 <div class="row no-gutters">
                     <aside class="col-md-6">
-                        <article class="gallery-wrap">
-                            <div class="img-big-wrap mainImage">
-                                    <img class="mx-auto d-block" src="{{ single_product.images.url }}">
-                            </div> <!-- img-big-wrap.// -->
+                        <article class="gallery-wrap my-5">
+
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+
+                                    {% for photo in product_gallery %}
+                                        <div class="carousel-item {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}">
+                                            <img class="d-block mx-auto" src="{{ photo.image.url }}">
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                   data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                   data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
 
                         </article> <!-- gallery-wrap .end// -->
-                        <ul class="thumb">
-                            <li>
-                              <a href="{{ single_product.images.url }}" target="mainImage"><img src="{{ single_product.images.url }}"
-                                                                                        alt="Product Image"></a>
-                                {% for i in product_gallery %}
-                                    <a href="{{ i.image.url }}" target="mainImage"><img src="{{ i.image.url }}"
-                                                                                        alt="Product Image"></a>
-                                {% endfor %}
-                            </li>
-                        </ul>
                     </aside>
 
-                    <main class="col-md-6 border-left">
-
+                    <main class="col-md-6 border-left border-bottom">
                         <form action="{% url 'add_cart' single_product.id %}" method="POST">
                             {% csrf_token %}
 
                             <article class="content-body">
 
                                 <h2 class="title">{{ single_product.product_name }}</h2>
+                                <hr>
 
                                 <div class="mb-3">
-                                    <var class="price h4">{{ single_product.price }}$</var>
-                                    <div class="rating-star">
+                                    <var class="price h4">{{ variation.price }} руб</var>
+                                    <br>
+
+                                    <div class="rating-star mt-2">
                                         <span>
                                             <i class="fa fa-lg fa-star{% if single_product.average_review < 0.5 %}-o{% elif single_product.average_review >= 0.5 and single_product.average_review <= 1 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
@@ -53,22 +64,55 @@
                                         </span>
                                         <span>{{ single_product.count_review }} reviews</span>
                                     </div>
+
                                 </div>
-                                <p>{{ single_product.description }}</p>
+
                                 <hr>
+                                <div class="row">
+                                    <div class="item-option-select">
+                                        <h6>Таблица размеров</h6>
+                                        <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+
+                                            {% for size in sizes %}
+                                                <label class="btn btn-light mt-2">
+                                                    <input type="radio" name="radio_color"> {{ size.size_number }}
+                                                </label>
+                                            {% endfor %}
+
+                                        </div>
+                                    </div>
+                                </div> <!-- row.// -->
                                 <hr>
-                                {% if single_product.stock <= 0 %}
-                                    <h5 class="">Out of Stock</h5>
-                                {% else %}
-                                    <button class="btn  btn-primary" type="submit"> <span
-                                            class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>
-                                    </button>
-                                {% endif %}
+
+                                <button class="btn  btn-primary" type="submit"> <span
+                                        class="text">Добавить в корзину</span> <i class="fas fa-shopping-cart"></i>
+                                </button>
 
                             </article> <!-- product-info-aside .// -->
 
                         </form>
                     </main> <!-- col.// -->
+
+                    <div class="col-md-6 border-top">
+                        <div class="mx-4 my-4">
+                            <h4>Состав</h4>
+                            {{ single_product.composition }}
+                            <br>
+                            <h4>Описание</h4>
+                            {{ single_product.description }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mx-4 my-4">
+                            <h4>Характеристики</h4>
+                            {% for specification in specifications %}
+                                <p>{{ specification.title }} --- {{ specification.value }}</p>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
                 </div> <!-- row.// -->
             </div> <!-- card.// -->
             <!-- ============================ COMPONENT 1 END .// ================================= -->
@@ -81,10 +125,11 @@
 
                     <form action="{% url 'submit_review' single_product.id %}" method="POST">
                         {% csrf_token %}
-                        <h5>Write your review</h5>
+
+                        <h5>Напишите свой отзыв</h5>
 
                         <div class="mb-5">
-                            <label for="">How do you rate this product?</label>
+                            <label for="">Как вы оцениваете этот продукт?</label>
                             <br>
                             <div class="rate">
                                 <input type="radio" name="rating" id="rating10" value="5" required>
@@ -136,7 +181,6 @@
                             Review:
                             <textarea name="review" class="form-control" id="" rows="4"></textarea>
                             <br>
-
                             {% if user.is_authenticated %}
                                 {% if order_product %}
                                     <input type="submit" class="btn btn-primary" value="Submit Review">
@@ -150,6 +194,7 @@
                         </div>
                         {% include 'inc/alerts.html' %}
                     </form>
+
                     <header class="section-heading">
                         <h3>Customer Reviews </h3>
 
@@ -168,7 +213,6 @@
                             </span>
                         </div>
                         <span>{{ single_product.count_review }} reviews</span>
-
 
                     </header>
 

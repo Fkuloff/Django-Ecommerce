@@ -23,8 +23,9 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
-    def get_url(self):
-        return reverse('product_detail', args=[self.category.slug, self.slug])
+    def get_absolute_url(self):
+        variation_vendor_code = Variation.objects.filter(product_id=self.pk)[0]
+        return reverse('product_detail', kwargs={"variation_vendor_code": variation_vendor_code, 'product_slug': self.slug})
 
     def average_review(self):
         reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(average=Avg('rating'))
@@ -49,18 +50,27 @@ class Specification(models.Model):
     value = models.CharField(max_length=64)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
 
 class Variation(models.Model):
-    vendor_code = models.CharField(max_length=64)
+    vendor_code = models.CharField(max_length=64, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     color = models.CharField(max_length=64)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.vendor_code
 
 
 class Size(models.Model):
     size_number = models.CharField(max_length=4)
     quantity = models.PositiveIntegerField()
     variation = models.ForeignKey(Variation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.size_number
 
 
 class ReviewRating(models.Model):
