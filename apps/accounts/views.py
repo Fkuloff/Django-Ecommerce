@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 
-from .forms import RegistrationForm, UserForm, UserProfileForm
-from .models import Account, UserProfile
+from .forms import RegistrationForm, UserForm
+from .models import Account
 from apps.cart.models import Cart, CartItem
 from apps.cart.views import _cart_id
 from apps.order.models import Order, OrderProduct
