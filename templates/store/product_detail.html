@@ -2,15 +2,15 @@
 
 
 {% block content %}
-    <section class="section-content padding-y bg">
-        <div class="container">
+    <section class="bg-light">
+        <div class="container py-4">
 
             <!-- ============================ COMPONENT 1 ================================= -->
             <div class="card">
                 <div class="row">
 
-
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-3" data-bs-ride="carousel">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-4"
+                         data-bs-ride="carousel">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
                                     class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -41,20 +41,17 @@
                         </button>
                     </div>
 
-                    <div class="col-md-6 border-left mt-4">
+                    <div class="col-md-6 mt-5 text-center">
                         <form action="{% url 'add_cart' single_product.id %}" method="POST">
                             {% csrf_token %}
 
-                            <article class="content-body">
+                            <h2 class="title">{{ single_product.product_name }}</h2>
 
-                                <h2 class="title">{{ single_product.product_name }}</h2>
-                                <hr>
+                            <hr class="mx-4">
 
-                                <div class="mb-3">
-                                    <var class="price h4">{{ variation.price }} руб</var>
-                                    <br>
-
-                                    <div class="rating-star mt-2">
+                            <div class="my-4">
+                                <h4 class="">{{ variation.price }} руб</h4>
+                                <div class="rating-star">
                                         <span>
                                             <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
@@ -67,39 +64,40 @@
                                             <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
                                         </span>
-                                        <span>{{ variation.count_review }} отзыв</span>
+                                    <span>{{ variation.count_review }} отзыв</span>
+                                </div>
+
+                            </div>
+
+                            <hr class="mx-4">
+
+                            <div class="row">
+                                <div class=''>
+                                    <h5>Таблица размеров</h5>
+
+                                    <div class="btn-group my-3" role="group" aria-label="Basic example">
+
+                                        {% for size in sizes %}
+                                            <button type="button"
+                                                    class="btn btn-outline-secondary">{{ size.size_number }}</button>
+                                        {% endfor %}
+
                                     </div>
 
                                 </div>
+                            </div> <!-- row.// -->
 
-                                <hr>
+                            <hr class="mx-4">
 
-                                <div class="row">
-                                    <div class=''>
-                                        <h6>Таблица размеров</h6>
-                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button class="btn btn-outline-primary my-3" type="submit"> <span
+                                    class="text">Добавить в корзину</span> <i class="fas fa-shopping-cart"></i>
+                            </button>
 
-                                            {% for size in sizes %}
-                                                <label class="btn btn-light mt-2">
-                                                    <input type="radio" name=""> {{ size.size_number }}
-                                                </label>
-                                            {% endfor %}
-
-                                        </div>
-                                    </div>
-                                </div> <!-- row.// -->
-                                <hr>
-
-                                <button class="btn  btn-primary" type="submit"> <span
-                                        class="text">Добавить в корзину</span> <i class="fas fa-shopping-cart"></i>
-                                </button>
-
-                            </article> <!-- product-info-aside .// -->
 
                         </form>
                     </div> <!-- col.// -->
 
-                    <div class="col-md-6">
+                    <div class="card-body col-md-6">
                         <div class="mx-5 my-5">
                             <h4>Состав</h4>
                             {{ single_product.composition }}
@@ -113,150 +111,154 @@
                         <div class="mx-5 my-5">
                             <h4>Характеристики</h4>
                             {% for specification in specifications %}
-                                <p>{{ specification.title }} --- {{ specification.value }}</p>
+                                <div class="d-flex">
+                                    <p class="me-auto">{{ specification.title }}</p>
+                                    <p>{{ specification.value }}</p>
+                                </div>
                             {% endfor %}
 
                         </div>
                     </div>
                 </div>
-                </div> <!-- card.// -->
-                <!-- ============================ COMPONENT 1 END .// ================================= -->
+            </div> <!-- card.// -->
+            <!-- ============================ COMPONENT 1 END .// ================================= -->
 
-                <br>
+            <br>
 
-                <div class="row">
-                    <div class="container col-md-9">
+            <div class="row">
+                <div class="container col-md-9">
 
-                        <form action="{% url 'submit_review' single_product.id %}" method="POST">
-                            {% csrf_token %}
+                    <form action="{% url 'submit_review' single_product.id %}" method="POST">
+                        {% csrf_token %}
 
-                            <h5>Напишите свой отзыв</h5>
+                        <h5>Напишите свой отзыв</h5>
 
-                            <div class="mb-5">
-                                <label for="">Как вы оцениваете этот продукт?</label>
-                                <br>
-                                <div class="rate">
-                                    <input type="radio" name="rating" id="rating10" value="5" required>
-                                    <label for="rating10"
-                                           title="5"></label>
+                        <div class="mb-2">
 
-                                    <input type="radio" name="rating" id="rating9" value="4.5" required>
-                                    <label for="rating9"
-                                           title="4.5"
-                                           class="half"></label>
-                                    <input type="radio" name="rating" id="rating8" value="4" required>
-                                    <label for="rating8"
-                                           title="4"></label>
+                            <label for="">Как вы оцениваете этот продукт?</label>
+                            <br>
+                            <div class="rate">
+                                <input type="radio" name="rating" id="rating10" value="5" required>
+                                <label for="rating10"
+                                       title="5"></label>
 
-                                    <input type="radio" name="rating" id="rating7" value="3.5" required>
-                                    <label for="rating7"
-                                           title="3.5"
-                                           class="half"></label>
-                                    <input type="radio" name="rating" id="rating6" value="3" required>
-                                    <label for="rating6"
-                                           title="3"></label>
+                                <input type="radio" name="rating" id="rating9" value="4.5" required>
+                                <label for="rating9"
+                                       title="4.5"
+                                       class="half"></label>
+                                <input type="radio" name="rating" id="rating8" value="4" required>
+                                <label for="rating8"
+                                       title="4"></label>
 
-                                    <input type="radio" name="rating" id="rating5" value="2.5" required>
-                                    <label for="rating5"
-                                           title="2.5"
-                                           class="half"></label>
-                                    <input type="radio" name="rating" id="rating4" value="2" required>
-                                    <label for="rating4"
-                                           title="2"></label>
+                                <input type="radio" name="rating" id="rating7" value="3.5" required>
+                                <label for="rating7"
+                                       title="3.5"
+                                       class="half"></label>
+                                <input type="radio" name="rating" id="rating6" value="3" required>
+                                <label for="rating6"
+                                       title="3"></label>
 
-                                    <input type="radio" name="rating" id="rating3" value="1.5" required>
-                                    <label for="rating3"
-                                           title="1.5"
-                                           class="half"></label>
-                                    <input type="radio" name="rating" id="rating2" value="1" required>
-                                    <label for="rating2"
-                                           title="1"></label>
+                                <input type="radio" name="rating" id="rating5" value="2.5" required>
+                                <label for="rating5"
+                                       title="2.5"
+                                       class="half"></label>
+                                <input type="radio" name="rating" id="rating4" value="2" required>
+                                <label for="rating4"
+                                       title="2"></label>
 
-                                    <input type="radio" name="rating" id="rating1" value="0.5" required>
-                                    <label for="rating1"
-                                           title="0.5"
-                                           class="half"></label>
-                                </div>
-                                <br>
+                                <input type="radio" name="rating" id="rating3" value="1.5" required>
+                                <label for="rating3"
+                                       title="1.5"
+                                       class="half"></label>
+                                <input type="radio" name="rating" id="rating2" value="1" required>
+                                <label for="rating2"
+                                       title="1"></label>
 
-                                Заголовок отзыва:
-                                <input type="text" class="form-control" name="subject">
-                                <br>
-                                Отзыв:
-                                <textarea name="review" class="form-control" id="" rows="4"></textarea>
-                                <br>
-                                {% if user.is_authenticated %}
-                                    {% if order_product %}
-                                        <input type="submit" class="btn btn-primary" value="Submit Review">
-                                    {% else %}
-                                        <p>Чтобы отставить отзыв вы должны приобрести этот товар</p>
-                                    {% endif %}
+                                <input type="radio" name="rating" id="rating1" value="0.5" required>
+                                <label for="rating1"
+                                       title="0.5"
+                                       class="half"></label>
+                            </div>
+                            <br>
+
+                            Заголовок отзыва:
+                            <input type="text" class="form-control" name="subject">
+                            <br>
+                            Отзыв:
+                            <textarea name="review" class="form-control" id="" rows="4"></textarea>
+                            <br>
+                            {% if user.is_authenticated %}
+                                {% if order_product %}
+                                    <input type="submit" class="btn btn-primary" value="Submit Review">
                                 {% else %}
-                                    <p>You must be logged in to post a review</p>
+                                    <p>Чтобы отставить отзыв вы должны приобрести этот товар</p>
                                 {% endif %}
+                            {% else %}
+                                <p>You must be logged in to post a review</p>
+                            {% endif %}
 
-                            </div>
-                            {% include 'inc/alerts.html' %}
-                        </form>
+                        </div>
+                        {% include 'inc/alerts.html' %}
+                    </form>
 
-                        <header class="section-heading">
-                            <h3>Отзывы клиентов</h3>
+                    <div class="d-flex my-3">
+                        <h3 class="me-auto">Отзывы клиентов:</h3>
 
-                            <div class="rating-star">
-                            <span>
-                                <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
-                                   aria-hidden="true"></i>
-                                <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
-                                   aria-hidden="true"></i>
-                                <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
-                                   aria-hidden="true"></i>
-                                <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
-                                   aria-hidden="true"></i>
-                                <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
-                                   aria-hidden="true"></i>
-                            </span>
-                            </div>
+                        <div class="rating-star">
+                                <span>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review < 1 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review < 2 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review < 3 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review < 4 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review < 5 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                </span>
                             <span>{{ variation.count_review }} отзыв</span>
+                        </div>
+                    </div>
 
-                        </header>
+                    {% for review in reviews %}
 
-                        {% for review in reviews %}
-
-                            <article class="box mb-3">
-                                <div class="icontext w-100">
-                                    {#                                <img src="./images/avatars/avatar1.jpg" class="img-xs icon rounded-circle">#}
-                                    <div class="text">
-                                        <span class="date text-muted float-md-right">{{ review.created_at }} </span>
-                                        <h6 class="mb-1">{{ review.user.full_name }} </h6>
-                                        <div class="rating-star">
-                                        <span>
-                                            <i class="fa fa-lg fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                        </span>
-                                        </div>
-                                    </div>
-                                </div> <!-- icontext.// -->
-                                <div class="mt-3">
-                                    <h6>{{ review.subject }}</h6>
-                                    <p>{{ review.review }}</p>
+                        <div class="card ">
+                            <div class="card-body pb-0 d-flex">
+                                <h6 class="mb-1 me-auto">{{ review.user.full_name }} </h6>
+                                <div class="rating-star">
+                                    <span>
+                                        <i class="fa fa-lg fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                        <i class="fa fa-lg fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                        <i class="fa fa-lg fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                        <i class="fa fa-lg fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                        <i class="fa fa-lg fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}"
+                                           aria-hidden="true"></i>
+                                    </span>
                                 </div>
-                            </article>
-                        {% endfor %}
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ review.subject }}</h5>
+                                <p class="card-text">
+                                    {{ review.review }}
+                                </p>
+
+                            </div>
+                            <hr>
+                            <div class="card-body pt-0">{{ review.created_at }}</div>
+                        </div>
+                    {% endfor %}
+
+                </div> <!-- col.// -->
+            </div> <!-- row.// -->
 
 
-                    </div> <!-- col.// -->
-                </div> <!-- row.// -->
-
-
-            </div> <!-- container .//  -->
+        </div> <!-- container .//  -->
     </section>
 
     <script>

@@ -61,7 +61,6 @@ def product_detail(request, product_slug, variation_vendor_code):
 
     reviews = ReviewRating.objects.filter(variation=variation, status=True)
 
-
     context = {
         'single_product': single_product,
         # 'in_cart': in_cart,

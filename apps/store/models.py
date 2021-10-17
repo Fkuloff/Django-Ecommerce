@@ -60,6 +60,7 @@ class Variation(models.Model):
         avg = 0
         if reviews['average'] is not None:
             avg = float(reviews['average'])
+        # print(avg)
         return avg
 
     def count_review(self):
