@@ -58,3 +58,13 @@ ul.thumb li img{
     height: 80px;
     border: 1px solid grey;
 }
+
+
+#lblCartCount {
+    font-size: 15px;
+    background: #F93154;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px;
+}
