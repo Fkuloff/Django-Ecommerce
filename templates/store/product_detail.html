@@ -97,8 +97,8 @@
                         </form>
                     </div> <!-- col.// -->
 
-                    <div class="card-body col-md-6">
-                        <div class="mx-5 my-5">
+                    <div class="col-md-6">
+                        <div class="my-5" style="margin-left: 10%; margin-right: 10%">
                             <h4>Состав</h4>
                             {{ single_product.composition }}
                             <br>
@@ -108,15 +108,11 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="mx-5 my-5">
+                        <div class="my-5" style="margin-left: 10%; margin-right: 10%">
                             <h4>Характеристики</h4>
                             {% for specification in specifications %}
-                                <div class="d-flex">
-                                    <p class="me-auto">{{ specification.title }}</p>
-                                    <p>{{ specification.value }}</p>
-                                </div>
+                                <p>{{ specification.title }}: {{ specification.value }}</p>
                             {% endfor %}
-
                         </div>
                     </div>
                 </div>
