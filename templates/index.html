@@ -3,7 +3,7 @@
 
 {% block content %}
     <!-- ========================= SECTION MAIN ========================= -->
-    <section class="section-intro padding-y-sm my-3">
+    <section class="section-intro padding-y-sm my-4">
         <div class="container">
 
             <div class="intro-banner-wrap">
@@ -15,52 +15,62 @@
     <!-- ========================= SECTION MAIN END// ========================= -->
 
     <!-- ========================= SECTION  ========================= -->
-    <section class="section-name padding-y-sm">
+    <section class="">
         <div class="container">
 
-            <header class="section-heading">
-                <a href="{% url 'store' %}" class="btn btn-outline-primary float-right">Увидеть все</a>
-                <h3 class="section-title">Популярные товары</h3>
-            </header><!-- sect-heading -->
+            <div class="d-flex">
+                <h3 class="me-auto">Популярные товары</h3>
+                <a href="{% url 'store' %}" class="btn btn-outline-primary justify-content-end">Увидеть все</a>
+            </div>
 
 
-            <div class="row">
-                {% for variation in variations %}
-                    <div class="col-md-3">
-                        <div class="card card-product-grid">
+            <div class="row my-3">
+                <div class="row my-3">
+                    {% for variation in variations %}
 
-                            {% for photo in gallery %}
-                                {% if photo.variation == variation %}
-                                    <a href="{{ variation.product.get_absolute_url }}" class="mt-2"> <img width="80%" style="border-radius: 5%" class="d-block mx-auto" src="{{ photo.image.url }}"> </a>
-                                {% endif %}
-                            {% endfor %}
+                        <div class="card text-center col-md-3">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
 
-                            <div class="info-wrap">
-                                <p>{{ variation.product.product_name }}</p>
+                                {% for photo in gallery %}
+                                    {% if photo.variation == variation %}
+                                        <a href="{{ variation.product.get_absolute_url }}" class="mt-2"> <img
+                                                width="80%"
+                                                style="border-radius: 5%"
+                                                class="d-block mx-auto mt-2"
+                                                src="{{ photo.image.url }}">
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+
+                            <div class="card-body">
+                                <h5 class="card-title">{{ variation.product.product_name }}</h5>
+                                <p class="card-text mb-1">{{ variation.price }} руб</p>
 
                                 <div class="rating-star">
-                                    <span>
-                                        <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
-                                           aria-hidden="true"></i>
-                                        <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
-                                           aria-hidden="true"></i>
-                                        <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
-                                           aria-hidden="true"></i>
-                                        <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
-                                           aria-hidden="true"></i>
-                                        <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
-                                           aria-hidden="true"></i>
-                                    </span>
+                                <span>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                </span>
                                 </div>
-                                <div class="price mt-1">{{ variation.price }} руб</div> <!-- price-wrap.// -->
+
                             </div>
                         </div>
-                    </div> <!-- col.// -->
-                {% endfor %}
 
-            </div> <!-- row.// -->
+                    {% endfor %}
 
-        </div><!-- container // -->
+                </div> <!-- row.// -->
+
+            </div><!-- container // -->
     </section>
     <!-- ========================= SECTION  END// ========================= -->
 
