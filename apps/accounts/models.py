@@ -45,8 +45,10 @@ class Account(AbstractBaseUser):
     email = models.EmailField(max_length=64, unique=True)
     phone_number = models.CharField(max_length=64, blank=True)
 
+    profile_avatar = models.ImageField(blank=True, upload_to='userprofile', default='userprofile/img_avatar.png')
+
     date_joined = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(auto_now=True)
 
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
