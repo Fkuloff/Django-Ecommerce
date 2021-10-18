@@ -25,7 +25,7 @@ def register(request):
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            phone_number = form.cleaned_data['phone_number']
+            # phone_number = form.cleaned_data['phone_number']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = email.split('@')[0]
@@ -37,13 +37,13 @@ def register(request):
                 username=username,
                 password=password,
             )
-            user.phone_number = phone_number
+            # user.phone_number = phone_number
             user.save()
 
             # User activation
             current_site = get_current_site(request)
             mail_subject = 'Please activate your account'
-            message = render_to_string('accounts/account_verification_email.html', {
+            message = render_to_string('accounts/../../templates/email/account_verification_email.html', {
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -104,14 +104,13 @@ def login(request):
                             for item in cart_item:
                                 item.user = user
                                 item.save()
-            except:
+            except Exception as e:
                 pass
             auth.login(request, user)
             messages.success(request, 'You are now logged in')
 
             url = request.META.get('HTTP_REFERER')
             try:
-
                 query = requests.utils.urlparse(url).query
                 print('query ->', query)
                 # next=/cart/checkout/
@@ -119,10 +118,8 @@ def login(request):
                 if 'next' in params:
                     nextPage = params['next']
                     return redirect(nextPage)
-
             except:
                 return redirect('dashboard')
-
         else:
             messages.error(request, 'Invalid login credentials')
             return redirect('login')
@@ -160,13 +157,13 @@ def dashboard(request):
     order = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = order.count()
 
-    user_profile = UserProfile.objects.get(user_id=request.user.id)
+    # user_profile = UserProfile.objects.get(user_id=request.user.id)
 
     context = {
         'orders_count': orders_count,
-        'user_profile': user_profile,
+        # 'user_profile': user_profile,
     }
-    return render(request, 'accounts/dashboard.html', context)
+    return render(request, 'accounts/../../templates/dashboard/dashboard.html', context)
 
 
 def forgotPassword(request):
@@ -178,7 +175,7 @@ def forgotPassword(request):
             # Reset password
             current_site = get_current_site(request)
             mail_subject = 'Reset your password'
-            message = render_to_string('accounts/reset_password_email.html', {
+            message = render_to_string('accounts/../../templates/email/reset_password_email.html', {
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -237,7 +234,7 @@ def my_orders(request):
     context = {
         'orders': orders,
     }
-    return render(request, 'accounts/my_orders.html', context)
+    return render(request, 'accounts/../../templates/dashboard/my_orders.html', context)
 
 
 @login_required(login_url='login')
@@ -260,7 +257,7 @@ def edit_profile(request):
         'user_profile': user_profile,
     }
 
-    return render(request, 'accounts/edit_profile.html', context)
+    return render(request, 'accounts/../../templates/dashboard/edit_profile.html', context)
 
 
 @login_required(login_url='login')

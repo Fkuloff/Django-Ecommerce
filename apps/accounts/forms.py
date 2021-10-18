@@ -3,16 +3,26 @@ from .models import Account
 
 
 class RegistrationForm(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Ваше имя',
+    }))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Ваша фамилия',
+    }))
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        'placeholder': 'Email', 'type': 'email',
+    }))
+
     password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Enter Password',
+        'placeholder': 'Введите пароль', 'type': 'password',
     }))
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Confirm Password'
+        'placeholder': 'Подтвердите пароль', 'type': 'password',
     }))
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password']
+        fields = ['first_name', 'last_name', 'email', 'password']
 
     def clean(self):
         cleaned_date = super(RegistrationForm, self).clean()
@@ -27,7 +37,7 @@ class RegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs['class'] = 'form-control form-control-lg'
 
 
 class UserForm(forms.ModelForm):
@@ -39,7 +49,6 @@ class UserForm(forms.ModelForm):
         super(UserForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
-
 
 # class UserProfileForm(forms.ModelForm):
 #     profile_avatar = forms.ImageField(required=False, error_messages={'invalid': {"Image files only"}}, widget=forms.FileInput)

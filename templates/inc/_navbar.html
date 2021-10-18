@@ -51,7 +51,7 @@
                         <ul class="navbar-nav">
 
                             <li class="nav-item">
-                                <a class="btn btn-primary" role="button" aria-disabled="true" href="{% url 'store' %}">Каталог</a>
+                                <a class="btn btn-outline-primary" role="button" aria-disabled="true" href="{% url 'store' %}">Каталог</a>
                             </li>
 
                             <li class="nav-item mx-4">
@@ -79,9 +79,9 @@
                             <div class="mx-4">
                                 <small class="title text-muted">Добро пожаловать гость!</small>
                                 <div class="">
-                                    <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary">Вход</a> <span
-                                        class="dark-transp"> | </span>
-                                    <a href="{% url 'register' %}" class="btn btn-sm btn-outline-primary"> Регистрация</a>
+                                    <a href="{% url 'login' %}" class="btn btn-sm btn-outline-dark">Вход</a>
+                                    <span class="mx-1"> | </span>
+                                    <a href="{% url 'register' %}" class="btn btn-sm btn-outline-dark"> Регистрация</a>
                                 </div>
                             </div>
                             <a class="text-reset mx-2" href="{% url 'cart' %}">
