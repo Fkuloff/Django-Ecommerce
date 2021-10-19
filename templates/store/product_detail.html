@@ -3,28 +3,20 @@
 
 {% block content %}
     <section class="bg-light">
-        <div class="container py-4">
+        <div class="container py-3">
 
             <!-- ============================ COMPONENT 1 ================================= -->
             <div class="card">
                 <div class="row">
 
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-4"
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-5"
                          data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0"
-                                    class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
-                        </div>
                         <div class="carousel-inner">
 
                             {% for photo in product_gallery %}
                                 <div class="carousel-item {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}"
                                      data-bs-interval="10000">
-                                    <img class="d-block mx-auto" width="80%" style="border-radius: 2%"
+                                    <img class="d-block mx-auto" width="70%" style="border-radius: 2%"
                                          src="{{ photo.image.url }}">
                                 </div>
                             {% endfor %}
@@ -41,11 +33,11 @@
                         </button>
                     </div>
 
-                    <div class="col-md-6 mt-5 text-center">
+                    <div class="col-md-6 mt-5 text-center" style="width: 45%">
                         <form action="{% url 'add_cart' single_product.id %}" method="POST">
                             {% csrf_token %}
 
-                            <h2 class="title">{{ single_product.product_name }}</h2>
+                            <h3 class="title">{{ single_product.product_name }}</h3>
 
                             <hr class="mx-4">
 
@@ -69,7 +61,6 @@
 
                             </div>
 
-                            <hr class="mx-4">
 
                             <div class="row">
                                 <div class=''>
@@ -79,7 +70,10 @@
 
                                         {% for size in sizes %}
                                             <button type="button"
-                                                    class="btn btn-outline-secondary">{{ size.size_number }}</button>
+                                                    class="btn btn-outline-secondary mx-1"
+                                                    {% if size.quantity == 0 %}disabled {% endif %}>
+                                                {{ size.size_number }}
+                                            </button>
                                         {% endfor %}
 
                                     </div>
@@ -89,7 +83,7 @@
 
                             <hr class="mx-4">
 
-                            <button class="btn btn-outline-dark btn-lg my-3" type="submit"> <span
+                            <button class="btn btn-outline-primary btn-lg my-3" type="submit"> <span
                                     class="text">Добавить в корзину</span> <i class="fas fa-shopping-cart"></i>
                             </button>
 
