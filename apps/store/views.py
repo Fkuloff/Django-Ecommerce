@@ -6,9 +6,16 @@ from apps.order.models import OrderProduct
 from apps.review.models import ReviewRating
 
 
-def store(request, category_slug=None):
-    categories = None
-    products = None
+def store(request):
+    products = Product.objects.filter(is_available=True).order_by('created_date')
+
+    variations = []
+    gallery = []
+    for p in products:
+        variation = Variation.objects.filter(product=p).first()
+        variations.append(variation)
+        gallery_var = ProductGallery.objects.filter(variation=variation).first()
+        gallery.append(gallery_var)
 
     # if category_slug is not None:
     #     categories = get_object_or_404(Category, slug=category_slug)
@@ -20,16 +27,17 @@ def store(request, category_slug=None):
     #     paged_products = paginator.get_page(page)
     #
     # else:
-    products = Product.objects.filter(is_available=True).order_by('-id')
-    product_count = products.count()
+    # products = Product.objects.filter(is_available=True).order_by('-id')
+    variations_count = len(variations)
 
-    paginator = Paginator(products, 10)
+    paginator = Paginator(variations, 10)
     page = request.GET.get('page')
-    paged_products = paginator.get_page(page)
+    paged_variations = paginator.get_page(page)
 
     context = {
-        'products': paged_products,
-        'product_count': product_count,
+        'variations_count': variations_count,
+        'variations': paged_variations,
+        'gallery': gallery,
     }
     return render(request, 'store/store.html', context)
 
@@ -76,15 +84,17 @@ def product_detail(request, product_slug, variation_vendor_code):
 
 
 def search(request):
+    variations = None
+    variations_count = 0
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
         if keyword:
-            products = Product.objects.order_by('-created_date').filter(
-                Q(description__icontains=keyword) | Q(product_name__icontains=keyword))
-            product_count = products.count()
+            variations = Variation.objects.order_by('-created_date').filter(
+                Q(product__description__icontains=keyword) | Q(product__product_name__icontains=keyword))
+            variations_count = variations.count()
     context = {
-        'products': products,
-        'product_count': product_count,
+        'variations': variations,
+        'variations_count': variations_count,
     }
 
     return render(request, 'store/store.html', context)

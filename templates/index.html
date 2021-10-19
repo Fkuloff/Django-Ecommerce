@@ -28,24 +28,22 @@
                 <div class="row my-3">
                     {% for variation in variations %}
 
-                        <div class="card text-center col-md-3">
-                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <div class="card text-center col-md-3 p-2 mx-auto" style="width: 24%;">
 
-                                {% for photo in gallery %}
-                                    {% if photo.variation == variation %}
-                                        <a href="{{ variation.product.get_absolute_url }}" class="mt-2"> <img
-                                                width="80%"
-                                                style="border-radius: 5%"
-                                                class="d-block mx-auto mt-2"
-                                                src="{{ photo.image.url }}">
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
+                            {% for photo in gallery %}
+                                {% if photo.variation == variation %}
+                                    <a href="{{ variation.product.get_absolute_url }}" class="mt-2">
+                                        <img width="80%"
+                                            style="border-radius: 5%"
+                                            class="d-block mx-auto mt-2"
+                                            src="{{ photo.image.url }}">
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
 
-                            </div>
 
                             <div class="card-body">
-                                <h5 class="card-title">{{ variation.product.product_name }}</h5>
+                                <h5 class="card-title">{{ variation.product.product_name|truncatechars:50 }}</h5>
                                 <p class="card-text mb-1">{{ variation.price }} руб</p>
 
                                 <div class="rating-star">

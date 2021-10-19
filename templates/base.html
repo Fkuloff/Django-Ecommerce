@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="pragma" content="no-cache"/>
@@ -30,6 +30,7 @@
     <!-- TODO Id -->
     <script src="https://www.paypal.com/sdk/js?client-id=&currency=RUB"></script>
 
+
     <script type="text/javascript">
         /// some script
 
@@ -40,7 +41,10 @@
         });
         // jquery end
     </script>
-
+    
+    {% block head %}
+    
+    {% endblock %}
 </head>
 <body>
 
