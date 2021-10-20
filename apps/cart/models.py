@@ -1,5 +1,5 @@
 from django.db import models
-from apps.store.models import Product, Variation
+from apps.store.models import Product, Variation, Size
 from apps.accounts.models import Account
 
 
@@ -13,8 +13,10 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
-    variation = models.ForeignKey(Variation, on_delete=models.CASCADE, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
+
+    variation = models.ForeignKey(Variation, on_delete=models.CASCADE, null=True)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True)
 
     quantity = models.IntegerField()
     is_active = models.BooleanField(default=True)

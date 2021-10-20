@@ -32,14 +32,16 @@
                                         <div class="mb-4 d-flex row">
 
                                             <div class="col-md-2 mx-2 my-auto">
-                                                <img src="{{ item.variation.product.main_img.url }}" class="shadow"
-                                                     style="height: 150px; border-radius: 3%">
+                                                <a href="{{ item.variation.product.get_absolute_url }}">
+                                                    <img src="{{ item.variation.product.main_img.url }}" class="shadow"
+                                                         style="height: 150px; border-radius: 3%">
+                                                </a>
                                             </div>
 
                                             <div class="col-md-5 my-auto">
                                                 <h5>{{ item.variation.product.product_name }} </h5>
                                                 <p class="text-muted mb-0"> Цвет: {{ item.variation.color }}  </p>
-                                                <p class="text-muted mb-0"> Размер:   </p>
+                                                <p class="text-muted mb-0"> Размер: {{ item.size }} </p>
                                                 <p class="text-muted mb-0"> {{ item.variation.product.seller }}   </p>
                                             </div>
 
@@ -50,6 +52,7 @@
                                                         <i class="fa fa-minus"></i>
                                                     </a>
                                                 </div>
+
                                                 <p class="my-auto mx-3">{{ item.quantity }}</p>
 
                                                 <div class="my-auto">
@@ -63,10 +66,11 @@
                                                 </div>
                                             </div>
 
+
                                             <div class="col-md my-auto text-center">
-                                                <h5>{{ item.variation.price }} руб </h5>
+                                                <h5>{{ item.sub_total }} руб </h5>
                                                 <p class="text-muted">
-                                                    что-то
+                                                    {{ item.variation.price }} руб за 1 шт
                                                 </p>
                                             </div>
 
