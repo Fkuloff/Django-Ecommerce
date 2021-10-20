@@ -9,17 +9,18 @@
             <div class="card">
                 <div class="row">
 
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-5"
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-2"
                          data-bs-ride="carousel">
                         <div class="carousel-inner">
 
                             {% for photo in product_gallery %}
-                                <div class="carousel-item {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}"
+                                <div class="carousel-item py-4 {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}"
                                      data-bs-interval="10000">
-                                    <img class="d-block mx-auto" width="70%" style="border-radius: 2%"
+                                    <img class="d-block mx-auto shadow" width="70%" style="border-radius: 2%"
                                          src="{{ photo.image.url }}">
                                 </div>
                             {% endfor %}
+
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
                                 data-bs-slide="prev">
@@ -34,17 +35,16 @@
                     </div>
 
                     <div class="col-md-6 mt-5 text-center" style="width: 45%">
-                        <form action="{% url 'add_cart' single_product.id %}" method="POST">
-                            {% csrf_token %}
 
-                            <h3 class="title">{{ single_product.product_name }}</h3>
 
-                            <hr class="mx-4">
+                        <h3 class="title">{{ single_product.product_name }}</h3>
 
-                            <div class="my-4">
-                                <h4 class="">{{ variation.price }} руб</h4>
-                                <div class="rating-star">
-                                        <span>
+                        <hr class="mx-4">
+
+                        <div class="my-5">
+                            <h4 class="">{{ variation.price }} руб</h4>
+                            <div class="rating-star">
+                                        <span class="star">
                                             <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
                                             <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
@@ -56,29 +56,30 @@
                                             <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
                                                aria-hidden="true"></i>
                                         </span>
-                                    <span>{{ variation.count_review }} отзыв</span>
-                                </div>
-
+                                <span>{{ variation.count_review }} отзыв</span>
                             </div>
 
+                        </div>
 
-                            <div class="row">
-                                <div class=''>
-                                    <h5>Таблица размеров</h5>
+                        <form action="{% url 'add_cart' variation.id %}" method="POST">
+                            {% csrf_token %}
 
-                                    <div class="btn-group my-3" role="group" aria-label="Basic example">
+                            <div class="">
+                                <h5>Таблица размеров</h5>
 
-                                        {% for size in sizes %}
-                                            <button type="button"
-                                                    class="btn btn-outline-secondary mx-1"
-                                                    {% if size.quantity == 0 %}disabled {% endif %}>
-                                                {{ size.size_number }}
-                                            </button>
-                                        {% endfor %}
+                                <div class="btn-group my-3" role="group" aria-label="Basic example">
 
-                                    </div>
+                                    {% for size in sizes %}
 
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                   id="{{ size.id }}" value="{{ size.id }}" required>
+                                            <label class="form-check-label" for="{{ size.id }}">{{ size.size_number }}</label>
+                                        </div>
+
+                                    {% endfor %}
                                 </div>
+
                             </div> <!-- row.// -->
 
                             <hr class="mx-4">
@@ -127,7 +128,7 @@
 
                             <label for="">Как вы оцениваете этот продукт?</label>
                             <br>
-                            <div class="rate">
+                            <div class="rate star">
                                 <input type="radio" name="rating" id="rating10" value="5" required>
                                 <label for="rating10"
                                        title="5"></label>
@@ -247,14 +248,5 @@
 
         </div> <!-- container .//  -->
     </section>
-
-    <script>
-        $(document).ready(function () {
-            $('.thumb a').click(function (e) {
-                e.preventDefault();
-                $('.mainImage img').attr('src', $(this).attr('href'));
-            })
-        })
-    </script>
 
 {% endblock %}

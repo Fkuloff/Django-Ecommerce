@@ -10,12 +10,9 @@ def store(request):
     products = Product.objects.filter(is_available=True).order_by('created_date')
 
     variations = []
-    gallery = []
     for p in products:
         variation = Variation.objects.filter(product=p).first()
         variations.append(variation)
-        gallery_var = ProductGallery.objects.filter(variation=variation).first()
-        gallery.append(gallery_var)
 
     # if category_slug is not None:
     #     categories = get_object_or_404(Category, slug=category_slug)
@@ -37,7 +34,6 @@ def store(request):
     context = {
         'variations_count': variations_count,
         'variations': paged_variations,
-        'gallery': gallery,
     }
     return render(request, 'store/store.html', context)
 
@@ -72,9 +68,10 @@ def product_detail(request, product_slug, variation_vendor_code):
     context = {
         'single_product': single_product,
         # 'in_cart': in_cart,
+        # 'order_product': order_product,
+
         'variation': variation,
         'sizes': sizes,
-        'order_product': order_product,
         'reviews': reviews,
         'specifications': specifications,
         'product_gallery': product_gallery,

@@ -130,7 +130,7 @@
 
                     <header class="border-bottom mb-4 pb-3">
                         <div class="form-inline">
-                            <span class="mr-md-auto">32 Items found </span>
+                            <span class="mr-md-auto">{{ variations_count }} товара найдено </span>
 
                         </div>
                     </header><!-- sect-heading -->
@@ -140,17 +140,12 @@
 
                             <div class="card text-center col-md-3 p-1 mx-auto" style="width: 24%;">
 
-                                {% for photo in gallery %}
-                                    {% if photo.variation == variation %}
-                                        <a href="{{ variation.product.get_absolute_url }}" class="mt-2">
-                                            <img width="80%"
-                                                 style="border-radius: 5%"
-                                                 class="d-block mx-auto mt-2"
-                                                 src="{{ photo.image.url }}">
-                                        </a>
-                                    {% endif %}
-                                {% endfor %}
-
+                                <a href="{{ variation.product.get_absolute_url }}" class="mt-2">
+                                        <img width="80%"
+                                             style="border-radius: 5%"
+                                             class="d-block mx-auto mt-2 shadow"
+                                             src="{{ variation.product.main_img.url }}">
+                                </a>
 
                                 <div class="card-body">
                                     <h5 class="card-title">{{ variation.product.product_name|truncatechars:50 }}</h5>

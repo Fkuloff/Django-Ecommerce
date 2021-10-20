@@ -14,6 +14,8 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     seller = models.CharField(max_length=64, blank=True)
 
+    main_img = models.ImageField(upload_to='store/products', max_length=255)
+
     is_available = models.BooleanField(default=True)
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -28,10 +30,6 @@ class Product(models.Model):
         variation_vendor_code = Variation.objects.filter(product_id=self.pk)[0]
         return reverse('product_detail',
                        kwargs={"variation_vendor_code": variation_vendor_code, 'product_slug': self.slug})
-
-
-
-
 
     class Meta:
         verbose_name = 'Product'
