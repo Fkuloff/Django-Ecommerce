@@ -32,7 +32,7 @@
                                         <div class="mb-4 d-flex row">
 
                                             <div class="col-md-2 mx-2 my-auto">
-                                                <a href="{{ item.variation.product.get_absolute_url }}">
+                                                <a href="{{ item.variation.get_absolute_url }}">
                                                     <img src="{{ item.variation.product.main_img.url }}" class="shadow"
                                                          style="height: 150px; border-radius: 3%">
                                                 </a>
@@ -56,7 +56,7 @@
                                                 <p class="my-auto mx-3">{{ item.quantity }}</p>
 
                                                 <div class="my-auto">
-                                                    <form action="{% url 'add_cart' item.variation.id %}" method="POST">
+                                                    <form action="{% url 'add_cart_item' item.id %}" method="POST">
                                                         {% csrf_token %}
                                                         <button class="btn btn-light" type="submit"
                                                                 id="button-plus">
@@ -161,7 +161,8 @@
                                     <p class="mb-3">
                                         <img src="{% static './images/misc/payments.png' %}" height="26">
                                     </p>
-                                    <a href="" class="btn btn-lg my-2 btn-outline-success"> Заказать </a>
+                                    <a href="{% url 'checkout' %}" class="btn btn-lg my-2 btn-outline-success">
+                                        Заказать </a>
                                 </div>
                             </div>
                         </div>

@@ -69,7 +69,6 @@ class Variation(models.Model):
 
     def get_variation_gallery(self):
         var_gallery = VariationGallery.objects.filter(variation=self).first()
-        print(var_gallery)
         return var_gallery
 
     def get_absolute_url(self):
