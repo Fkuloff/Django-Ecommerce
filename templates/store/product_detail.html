@@ -98,14 +98,11 @@
                                 <div class="btn-group my-3" role="group" aria-label="Basic example">
 
                                     {% for size in sizes %}
-
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                                   id="{{ size.id }}" value="{{ size.id }}" required {% if size.quantity == 0 %} disabled {% endif %}>
-                                            <label class="form-check-label"
-                                                   for="{{ size.id }}">{{ size.size_number }}</label>
+                                        <div class="mx-1">
+                                            <input type="radio" class="btn-check" name="options" id="{{ size.id }}" value="{{ size.id }}"
+                                                   autocomplete="off" required/>
+                                            <label class="btn btn-outline-secondary" style="width: 50px" for="{{ size.id }}">{{ size.size_number }}</label>
                                         </div>
-
                                     {% endfor %}
                                 </div>
 
