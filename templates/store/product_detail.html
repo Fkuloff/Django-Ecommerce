@@ -16,19 +16,18 @@
 {% block content %}
     <section class="bg-light">
         <div class="container py-3">
-
-            <!-- ============================ COMPONENT 1 ================================= -->
             <div class="card">
                 <div class="row">
 
-                    <div id="carouselExampleDark" class="carousel carousel-dark slide col-md-6 mt-2"
+                    <div id="carouselExampleDark"
+                         class="carousel carousel-dark slide col-md-6 mt-2 d-flex align-items-center"
                          data-bs-ride="carousel">
                         <div class="carousel-inner">
 
                             {% for photo in product_gallery %}
-                                <div class="carousel-item py-4 {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}"
+                                <div class="carousel-item py-5 {% if photo.image.url == product_gallery.first.image.url %}active{% endif %}"
                                      data-bs-interval="10000">
-                                    <img class="d-block mx-auto shadow" width="70%" style="border-radius: 2%"
+                                    <img class="d-flex mx-auto shadow" width="80%" style="border-radius: 2%"
                                          src="{{ photo.image.url }}">
                                 </div>
                             {% endfor %}
@@ -53,7 +52,7 @@
 
                         <hr class="mx-4">
 
-                        <div class="my-5">
+                        <div class="mb-5">
                             <h4 class="">{{ variation.price }} руб</h4>
                             <div class="rating-star">
                                 <span class="star">
@@ -76,10 +75,14 @@
                                     <h4 class="py-3" style="text-align: start">Другие цвета:</h4>
                                     <div class="swiper-wrapper">
                                         {% for var in variations_of_single_product %}
-                                            <div class="swiper-slide">
-                                                <a href="{{ var.get_absolute_url }}">
-                                                    <img src="{{ var.get_variation_gallery.image.url }}" alt=""></a>
-                                            </div>
+                                            {% if variation != var %}
+                                                <div class="swiper-slide">
+                                                    <a href="{{ var.get_absolute_url }}">
+                                                        <img src="{{ var.get_variation_gallery.image.url }}"
+                                                             alt=""></a>
+                                                </div>
+                                            {% endif %}
+
                                         {% endfor %}
                                     </div>
                                     <div class="swiper-pagination"></div>
@@ -99,27 +102,28 @@
 
                                     {% for size in sizes %}
                                         <div class="mx-1">
-                                            <input type="radio" class="btn-check" name="options" id="{{ size.id }}" value="{{ size.id }}"
-                                                   autocomplete="off" required/>
-                                            <label class="btn btn-outline-secondary" style="width: 50px" for="{{ size.id }}">{{ size.size_number }}</label>
+                                            <input type="radio" class="btn-check" name="options" id="{{ size.id }}"
+                                                   value="{{ size.id }}"
+                                                   autocomplete="off" required {% if size.quantity == 0 %}
+                                                   disabled {% endif %}/>
+                                            <label class="btn btn-outline-secondary" style="width: 50px"
+                                                   for="{{ size.id }}">{{ size.size_number }}</label>
                                         </div>
                                     {% endfor %}
                                 </div>
 
-                            </div> <!-- row.// -->
+                            </div>
 
                             <hr class="mx-4">
 
                             <button class="btn btn-outline-primary btn-lg my-3" type="submit"> <span
                                     class="text">Добавить в корзину</span> <i class="fas fa-shopping-cart"></i>
                             </button>
-
-
                         </form>
-                    </div> <!-- col.// -->
+                    </div>
 
                     <div class="col-md-6">
-                        <div class="my-5" style="margin-left: 10%; margin-right: 10%">
+                        <div class="mb-5 mt-3" style="margin-left: 20%; margin-right: 10%">
                             <h4>Состав</h4>
                             {{ single_product.composition }}
                             <br>
@@ -129,7 +133,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <div class="my-5" style="margin-right: 10%">
+                        <div class="mb-5 mt-3" style="margin-right: 10%">
                             <h4>Характеристики</h4>
                             {% for specification in specifications %}
                                 <p>{{ specification.title }}: {{ specification.value }}</p>
@@ -137,8 +141,7 @@
                         </div>
                     </div>
                 </div>
-            </div> <!-- card.// -->
-            <!-- ============================ COMPONENT 1 END .// ================================= -->
+            </div>
 
             <br>
 
@@ -147,78 +150,78 @@
 
                     <form action="{% url 'submit_review' single_product.id %}" method="POST">
                         {% csrf_token %}
+                        {% if user.is_authenticated %}
+                            {% if order_product %}
+                                <h5>Напишите свой отзыв</h5>
 
-                        <h5>Напишите свой отзыв</h5>
+                                <div class="mb-2">
 
-                        <div class="mb-2">
+                                <label for="">Как вы оцениваете этот продукт?</label>
+                                <br>
+                                <div class="rate star">
+                                    <input type="radio" name="rating" id="rating10" value="5" required>
+                                    <label for="rating10"
+                                           title="5"></label>
 
-                            <label for="">Как вы оцениваете этот продукт?</label>
-                            <br>
-                            <div class="rate star">
-                                <input type="radio" name="rating" id="rating10" value="5" required>
-                                <label for="rating10"
-                                       title="5"></label>
+                                    <input type="radio" name="rating" id="rating9" value="4.5" required>
+                                    <label for="rating9"
+                                           title="4.5"
+                                           class="half"></label>
+                                    <input type="radio" name="rating" id="rating8" value="4" required>
+                                    <label for="rating8"
+                                           title="4"></label>
 
-                                <input type="radio" name="rating" id="rating9" value="4.5" required>
-                                <label for="rating9"
-                                       title="4.5"
-                                       class="half"></label>
-                                <input type="radio" name="rating" id="rating8" value="4" required>
-                                <label for="rating8"
-                                       title="4"></label>
+                                    <input type="radio" name="rating" id="rating7" value="3.5" required>
+                                    <label for="rating7"
+                                           title="3.5"
+                                           class="half"></label>
+                                    <input type="radio" name="rating" id="rating6" value="3" required>
+                                    <label for="rating6"
+                                           title="3"></label>
 
-                                <input type="radio" name="rating" id="rating7" value="3.5" required>
-                                <label for="rating7"
-                                       title="3.5"
-                                       class="half"></label>
-                                <input type="radio" name="rating" id="rating6" value="3" required>
-                                <label for="rating6"
-                                       title="3"></label>
+                                    <input type="radio" name="rating" id="rating5" value="2.5" required>
+                                    <label for="rating5"
+                                           title="2.5"
+                                           class="half"></label>
+                                    <input type="radio" name="rating" id="rating4" value="2" required>
+                                    <label for="rating4"
+                                           title="2"></label>
 
-                                <input type="radio" name="rating" id="rating5" value="2.5" required>
-                                <label for="rating5"
-                                       title="2.5"
-                                       class="half"></label>
-                                <input type="radio" name="rating" id="rating4" value="2" required>
-                                <label for="rating4"
-                                       title="2"></label>
+                                    <input type="radio" name="rating" id="rating3" value="1.5" required>
+                                    <label for="rating3"
+                                           title="1.5"
+                                           class="half"></label>
+                                    <input type="radio" name="rating" id="rating2" value="1" required>
+                                    <label for="rating2"
+                                           title="1"></label>
 
-                                <input type="radio" name="rating" id="rating3" value="1.5" required>
-                                <label for="rating3"
-                                       title="1.5"
-                                       class="half"></label>
-                                <input type="radio" name="rating" id="rating2" value="1" required>
-                                <label for="rating2"
-                                       title="1"></label>
+                                    <input type="radio" name="rating" id="rating1" value="0.5" required>
+                                    <label for="rating1"
+                                           title="0.5"
+                                           class="half"></label>
+                                </div>
+                                <br>
 
-                                <input type="radio" name="rating" id="rating1" value="0.5" required>
-                                <label for="rating1"
-                                       title="0.5"
-                                       class="half"></label>
-                            </div>
-                            <br>
+                                Заголовок отзыва:
+                                <input type="text" class="form-control" name="subject">
+                                <br>
+                                Отзыв:
+                                <textarea name="review" class="form-control" id="" rows="4"></textarea>
+                                <br>
 
-                            Заголовок отзыва:
-                            <input type="text" class="form-control" name="subject">
-                            <br>
-                            Отзыв:
-                            <textarea name="review" class="form-control" id="" rows="4"></textarea>
-                            <br>
-                            {% if user.is_authenticated %}
-                                {% if order_product %}
-                                    <input type="submit" class="btn btn-primary" value="Submit Review">
-                                {% else %}
-                                    <p>Чтобы отставить отзыв вы должны приобрести этот товар</p>
-                                {% endif %}
+                                <input type="submit" class="btn btn-primary" value="Submit Review">
                             {% else %}
-                                <p>You must be logged in to post a review</p>
+                                <h5 class="text-center my-5">Чтобы отставить отзыв вы должны приобрести этот товар</h5>
                             {% endif %}
+                        {% else %}
+                            <p>Вы должны войти в систему, чтобы оставить отзыв</p>
+                        {% endif %}
 
                         </div>
                         {% include 'inc/alerts.html' %}
                     </form>
 
-                    <div class="d-flex my-3">
+                    <div class="d-flex my-5 pb-5">
                         <h3 class="me-auto">Отзывы клиентов:</h3>
 
                         <div class="rating-star">
@@ -237,13 +240,13 @@
                             <span>{{ variation.count_review }} отзыв</span>
                         </div>
                     </div>
+                    {% if reviews %}
+                        {% for review in reviews %}
 
-                    {% for review in reviews %}
-
-                        <div class="card " style="background-color:#ffffff;">
-                            <div class="card-header d-flex">
-                                <h6 class="mb-1 me-auto">{{ review.user.full_name }} </h6>
-                                <div class="rating-star">
+                            <div class="card " style="background-color:#ffffff;">
+                                <div class="card-header d-flex">
+                                    <h6 class="mb-1 me-auto">{{ review.user.full_name }} </h6>
+                                    <div class="rating-star">
                                     <span>
                                         <i class="fa fa-lg fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}"
                                            aria-hidden="true"></i>
@@ -256,23 +259,25 @@
                                         <i class="fa fa-lg fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}"
                                            aria-hidden="true"></i>
                                     </span>
+                                    </div>
                                 </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ review.subject }}</h5>
+                                    <p class="card-text">
+                                        {{ review.review }}
+                                    </p>
+                                </div>
+                                <div class="card-footer">{{ review.created_at }}</div>
                             </div>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ review.subject }}</h5>
-                                <p class="card-text">
-                                    {{ review.review }}
-                                </p>
-                            </div>
-                            <div class="card-footer">{{ review.created_at }}</div>
-                        </div>
-                    {% endfor %}
-
-                </div> <!-- col.// -->
-            </div> <!-- row.// -->
+                        {% endfor %}
+                    {% else %}
+                        <h5 class="text-center my-5">Здесь пока пусто :(</h5>
+                    {% endif %}
+                </div>
+            </div>
 
 
-        </div> <!-- container .//  -->
+        </div>
     </section>
 
 
