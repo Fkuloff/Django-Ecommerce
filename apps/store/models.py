@@ -26,11 +26,6 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
-    def get_absolute_url(self):
-        variation_vendor_code = Variation.objects.filter(product_id=self.pk)[0]
-        return reverse('product_detail',
-                       kwargs={"variation_vendor_code": variation_vendor_code, 'product_slug': self.slug})
-
     class Meta:
         verbose_name = 'Product'
 
