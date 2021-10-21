@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render
-from .models import Product, ProductGallery, Variation, Size, Specification
+from .models import Product, VariationGallery, Variation, Size, Specification
 from django.core.paginator import Paginator
 from apps.order.models import OrderProduct
 from apps.review.models import ReviewRating
@@ -43,13 +43,13 @@ def product_detail(request, product_slug, variation_vendor_code):
         single_product = Product.objects.get(slug=product_slug)
         specifications = Specification.objects.filter(product=single_product)
 
+        variations_of_single_product = Variation.objects.filter(product=single_product)
+
         variation = Variation.objects.get(vendor_code=variation_vendor_code)
 
-        product_gallery = ProductGallery.objects.filter(variation=variation)
+        product_gallery = VariationGallery.objects.filter(variation=variation)
         sizes = Size.objects.filter(variation=variation)
 
-        # in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request),
-        #                                   product=single_product).exists()  # True/False
     except Exception as e:
         raise e
 
@@ -67,8 +67,8 @@ def product_detail(request, product_slug, variation_vendor_code):
 
     context = {
         'single_product': single_product,
-        # 'in_cart': in_cart,
         # 'order_product': order_product,
+        'variations_of_single_product': variations_of_single_product,
 
         'variation': variation,
         'sizes': sizes,

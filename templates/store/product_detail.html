@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
+    <!-- Demo styles -->
+    <script type="text/javascript"
+            src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=aARnDb3Hw7jvDQ0vXFraeT4UdeZnvrTUZbNU_snMXF5RvAzD8zn618Jof7EUhemUY0y0s1yTjV022uN_MesHKw-xmmAcHVVGxMCN8v5Bmw0"
+            charset="UTF-8"></script>
+    <link rel="stylesheet" crossorigin="anonymous"
+          href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9zd2lwZXJqcy5jb20vZGVtb3MvMTEwLXNsaWRlcy1wZXItdmlldy9jb3JlLmh0bWw"/>
 
+{% endblock %}
 {% block content %}
     <section class="bg-light">
         <div class="container py-3">
@@ -44,20 +56,36 @@
                         <div class="my-5">
                             <h4 class="">{{ variation.price }} руб</h4>
                             <div class="rating-star">
-                                        <span class="star">
-                                            <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                            <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
-                                               aria-hidden="true"></i>
-                                        </span>
+                                <span class="star">
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                    <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
+                                       aria-hidden="true"></i>
+                                </span>
                                 <span>{{ variation.count_review }} отзыв</span>
                             </div>
+
+                            {% if variations_of_single_product.count > 1 %}
+                                <div class="swiper mySwiper my-3">
+                                    <h4 class="py-3" style="text-align: start">Другие цвета:</h4>
+                                    <div class="swiper-wrapper">
+                                        {% for var in variations_of_single_product %}
+                                            <div class="swiper-slide">
+                                                <a href="{{ var.get_absolute_url }}">
+                                                    <img src="{{ var.get_variation_gallery.image.url }}" alt=""></a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="swiper-pagination"></div>
+                                </div>
+
+                            {% endif %}
 
                         </div>
 
@@ -73,8 +101,9 @@
 
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                                   id="{{ size.id }}" value="{{ size.id }}" required>
-                                            <label class="form-check-label" for="{{ size.id }}">{{ size.size_number }}</label>
+                                                   id="{{ size.id }}" value="{{ size.id }}" required {% if size.quantity == 0 %} disabled {% endif %}>
+                                            <label class="form-check-label"
+                                                   for="{{ size.id }}">{{ size.size_number }}</label>
                                         </div>
 
                                     {% endfor %}
@@ -249,4 +278,18 @@
         </div> <!-- container .//  -->
     </section>
 
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    </script>
 {% endblock %}

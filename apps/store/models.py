@@ -68,6 +68,19 @@ class Variation(models.Model):
             count = int(reviews['count'])
         return count
 
+    def get_sizes(self):
+        sizes = Size.objects.filter(variation=self)
+        return sizes
+
+    def get_variation_gallery(self):
+        var_gallery = VariationGallery.objects.filter(variation=self).first()
+        print(var_gallery)
+        return var_gallery
+
+    def get_absolute_url(self):
+        return reverse('product_detail',
+                       kwargs={"variation_vendor_code": self.vendor_code, 'product_slug': self.product.slug})
+
 
 class Size(models.Model):
     size_number = models.CharField(max_length=4)
@@ -78,7 +91,7 @@ class Size(models.Model):
         return self.size_number
 
 
-class ProductGallery(models.Model):
+class VariationGallery(models.Model):
     variation = models.ForeignKey(Variation, default=None, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='store/products', max_length=255)
 

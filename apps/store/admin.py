@@ -6,7 +6,7 @@ import nested_admin
 
 @admin_thumbnails.thumbnail('image')
 class ProductGalleryInline(nested_admin.NestedTabularInline):
-    model = ProductGallery
+    model = VariationGallery
     extra = 1
     list_display = ''
 
