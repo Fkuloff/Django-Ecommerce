@@ -2,67 +2,6 @@
 
 
 {% block content %}
-    {#    <section class="section-content padding-y">#}
-    {##}
-    {#        <!-- ============================ COMPONENT REGISTER   ================================= -->#}
-    {#        <div class="card mx-auto" style="max-width:520px; margin-top:40px;">#}
-    {#            <article class="card-body">#}
-    {#                {% include 'inc/alerts.html' %}#}
-    {#                <header class="mb-4"><h4 class="card-title">Sign up</h4></header>#}
-    {#                <form action="{% url 'register' %}" method="POST">#}
-    {#                    {% csrf_token %}#}
-    {##}
-    {#                    <div class="form-row">#}
-    {#                        <div class="col form-group">#}
-    {#                            <label>First name</label>#}
-    {#                            {{ form.first_name }}#}
-    {#                        </div> <!-- form-group end.// -->#}
-    {#                        <div class="col form-group">#}
-    {#                            <label>Last name</label>#}
-    {#                            {{ form.last_name }}#}
-    {#                        </div> <!-- form-group end.// -->#}
-    {#                    </div> <!-- form-row end.// -->#}
-    {##}
-    {#                    <div class="form-group">#}
-    {#                        <label>Email</label>#}
-    {#                        {{ form.email }}#}
-    {#                        <small class="form-text text-muted">We'll never share your email with anyone else.</small>#}
-    {#                    </div> <!-- form-group end.// -->#}
-    {#                    {{ form.email.errors }}#}
-    {##}
-    {#                    <div class="form-group">#}
-    {#                        <label>Phone</label>#}
-    {#                        {{ form.phone_number }}#}
-    {#                        <small class="form-text text-muted">We'll never share your phone number with anyone#}
-    {#                            else.</small>#}
-    {#                    </div> <!-- form-group end.// -->#}
-    {##}
-    {#                    <div class="form-row">#}
-    {#                        <div class="form-group col-md-6">#}
-    {#                            <label>Create password</label>#}
-    {#                            {{ form.password }}#}
-    {#                        </div> <!-- form-group end.// -->#}
-    {#                        <div class="form-group col-md-6">#}
-    {#                            <label>Repeat password</label>#}
-    {#                            {{ form.confirm_password }}#}
-    {#                        </div> <!-- form-group end.// -->#}
-    {#                    </div>#}
-    {#                    {{ form.non_field_errors }}#}
-    {##}
-    {#                    <div class="form-group">#}
-    {#                        <button type="submit" class="btn btn-primary btn-block"> Register</button>#}
-    {#                    </div> <!-- form-group// -->#}
-    {#                    {{ form.errors }}#}
-    {#                </form>#}
-    {#            </article><!-- card-body.// -->#}
-    {#        </div> <!-- card .// -->#}
-    {#        <p class="text-center mt-4">Have an account? <a href="{% url 'login' %}">Log In</a></p>#}
-    {#        <br><br>#}
-    {#        <!-- ============================ COMPONENT REGISTER  END.// ================================= -->#}
-    {##}
-    {##}
-    {#    </section>#}
-
 
     <section class="">
         <div class="container py-4 h-100">
@@ -71,54 +10,70 @@
                     <div class="card" style="border-radius: 1rem;">
                         <div class="card-body p-5 text-center">
 
-                            <div class="">
-                                <h3 class="fw-bold mb-4 text-uppercase">Registration</h3>
+                            <p class="">
+                            <h3 class="fw-bold mb-4 text-uppercase">Регистрация</h3>
+                            {% include 'inc/alerts.html' %}
 
-                                <form action="{% url 'register' %}" method="POST">
-                                    {% csrf_token %}
-                                    <div class="form-group my-4">
-                                        {{ form.first_name }}
-                                    </div>
-
-                                    <div class="form-group my-4">
-                                        {{ form.last_name }}
-                                    </div>
-
-                                    <div class="form-group my-4">
-                                        {{ form.email }}
-                                        <small id="emailHelp" class="form-text text-muted">Мы никогда никому не
-                                            передадим вашу электронную почту.</small>
-                                    </div>
-
-                                    <div class="form-group my-4">
-                                        {{ form.password }}
-                                    </div>
-                                    <div class="form-group my-4">
-                                        {{ form.confirm_password }}
-                                    </div>
-
-                                    <button class="btn btn-outline-dark btn-lg px-5" type="submit">Регистрация</button>
-                                </form>
-
-
-                                <div class="d-flex justify-content-center text-center mt-3 pt-1">
-                                    <a href="#!" class="text-black"><i class="fab fa-facebook-f fa-lg"></i></a>
-                                    <a href="#!" class="text-black"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                                    <a href="#!" class="text-black"><i class="fab fa-google fa-lg"></i></a>
+                            <form action="{% url 'register' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group my-4">
+                                    {{ form.first_name }}
                                 </div>
 
+                                <div class="form-group my-4">
+                                    {{ form.last_name }}
+                                </div>
+
+                                <div class="form-group my-4">
+                                    {{ form.email }}
+                                    <small id="emailHelp" class="form-text text-muted">Мы никогда никому не
+                                        передадим вашу электронную почту.</small>
+                                </div>
+
+                                <div class="form-group my-4">
+                                    {{ form.phone_number }}
+                                    <small id="phoneHelp" class="form-text text-muted">Мы никогда никому не
+                                        передадим ваш номер телефона.</small>
+                                </div>
+
+                                <div class="form-group my-4">
+                                    {{ form.password }}
+                                </div>
+                                <div class="form-group my-4">
+                                    {{ form.confirm_password }}
+                                </div>
+                                {% if form.non_field_errors %}
+                                    <div class="card bg-light my-3">
+                                        {% for error in form.non_field_errors %}
+                                            <h5 class="my-2">{{ error }}</h5>
+                                        {% endfor %}
+                                    </div>
+
+                                {% endif %}
+                                <button class="btn btn-outline-dark btn-lg px-5" type="submit">Регистрация</button>
+                            </form>
+
+
+                            <div class="d-flex justify-content-center text-center mt-3 pt-1">
+                                <a href="#!" class="text-black"><i class="fab fa-facebook-f fa-lg"></i></a>
+                                <a href="#!" class="text-black"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
+                                <a href="#!" class="text-black"><i class="fab fa-google fa-lg"></i></a>
                             </div>
 
-                            <div>
-                                <p class="mb-0 mt-3">Уже есть учетная запись?
-                                    <a href="{% url 'login' %}" class="text-black-50 fw-bold">Sign In</a>
-                                </p>
-                            </div>
+                         <div>
+                            <p class="mb-0 mt-3">Уже есть учетная запись?
+                                <a href="{% url 'login' %}" class="text-black-50 fw-bold">Sign In</a>
+                            </p>
+                        </div>
 
                         </div>
+
+
+
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 

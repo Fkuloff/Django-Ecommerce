@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth import password_validation
+from django.core.validators import RegexValidator
 from .models import Account
 
 
@@ -15,23 +17,37 @@ class RegistrationForm(forms.ModelForm):
 
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholder': 'Введите пароль', 'type': 'password',
-    }))
+    }),
+        min_length=8,
+    )
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
         'placeholder': 'Подтвердите пароль', 'type': 'password',
+    }), min_length=8,
+    )
+
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Телефон', 'type': 'phone',
     }))
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'email', 'password']
+        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
 
     def clean(self):
         cleaned_date = super(RegistrationForm, self).clean()
         password = cleaned_date.get('password')
         confirm_password = cleaned_date.get('confirm_password')
 
+        try:
+            password_validation.validate_password(password, self.instance)
+        except forms.ValidationError as error:
+            raise forms.ValidationError(
+                error
+            )
+
         if password != confirm_password:
             raise forms.ValidationError(
-                'Password does not match'
+                'Пароли не совпадают'
             )
 
     def __init__(self, *args, **kwargs):

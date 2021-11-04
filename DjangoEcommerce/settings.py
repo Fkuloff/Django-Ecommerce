@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'nested_admin',
+    'phonenumber_field',
 
     'apps.main',
     'apps.category',

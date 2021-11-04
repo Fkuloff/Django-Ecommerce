@@ -1,17 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import RegexValidator
 
 
 class AccountManager(BaseUserManager):
-    def create_user(self, first_name, last_name, username, email, password=None):
+    def create_user(self, first_name, last_name, email, phone_number, password=None):
         if not email:
             raise ValueError('User must have an email')
-        if not username:
-            return ValueError('User must have an username')
 
         user = self.model(
             email=self.normalize_email(email),
-            username=username,
+            phone_number=phone_number,
             first_name=first_name,
             last_name=last_name
         )
@@ -20,10 +19,9 @@ class AccountManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, first_name, last_name, username, email, password):
+    def create_superuser(self, first_name, last_name, email, password):
         user = self.create_user(
             email=self.normalize_email(email),
-            username=username,
             first_name=first_name,
             last_name=last_name,
             password=password
@@ -41,9 +39,10 @@ class AccountManager(BaseUserManager):
 class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=64)
     last_name = models.CharField(max_length=64)
-    username = models.CharField(max_length=64, unique=True)
+    # username = models.CharField(max_length=64, unique=True, blank=True)
+
     email = models.EmailField(max_length=64, unique=True)
-    phone_number = models.CharField(max_length=64, blank=True)
+    phone_number = models.CharField(max_length=12, unique=True)
 
     profile_avatar = models.ImageField(blank=True, upload_to='userprofile', default='userprofile/img_avatar.png')
 
@@ -71,7 +70,6 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, add_label):
         return True
-
 
 # class UserProfile(models.Model):
 #     user = models.OneToOneField(Account, on_delete=models.CASCADE)
