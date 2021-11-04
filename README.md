@@ -9,6 +9,6 @@
 -PayPal patments
 
 
-Установка зависимостей
+Установка зависимостей:
 
   pip install -r requirements.txt
