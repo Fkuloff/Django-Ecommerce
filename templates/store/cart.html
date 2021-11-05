@@ -79,13 +79,14 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            <form action="{% url 'place_order' %}" method="POST" class="p-0 mb-3">
+                                {% csrf_token %}
 
-                            <div class="d-flex justify-content-between mb-3 p-0">
-                                <div class="card col-md-6 p-3" style="width: 49%">
-                                    <div class="card-body">
-                                        <h4 class="card-title mb-4">Информация о доставке</h4>
-                                        <form action="{% url 'place_order' %}" method="POST">
-                                            {% csrf_token %}
+                                <div class="d-flex justify-content-between">
+                                    <div class="card col-md-6 p-4" style="width: 49%">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Информация о доставке</h4>
+
                                             <div class="row">
                                                 <div class="form-group col-sm-12">
                                                     <label>Улица *</label>
@@ -109,35 +110,40 @@
                                                 </div>
 
                                             </div> <!-- row.// -->
-                                    </div> <!-- card-body.// -->
+                                        </div> <!-- card-body.// -->
+                                    </div>
+
+                                    {% if not request.user %}
+                                        <div class="card col-md-6 p-4" style="width: 49%">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Ваши данные</h4>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label>Имя *</label>
+                                                        <input type="text" placeholder="" name="first_name"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label>Фамилия *</label>
+                                                        <input type="text" placeholder="" name="last_name"
+                                                               class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-sm-12">
+                                                        <label>Контактный телефон *</label>
+                                                        <input type="text" value="" name="phone" class="form-control">
+                                                    </div>
+                                                    <div class="form-group col-sm-8">
+                                                        <label>Электронная почта</label>
+                                                        <input type="email" name="email" placeholder="example@mail.ru"
+                                                               class="form-control">
+                                                    </div>
+                                                </div> <!-- row.// -->
+                                            </div> <!-- card-body.// -->
+                                        </div>
+
+                                    {% endif %}
+
                                 </div>
-                                <div class="card col-md-6 p-3" style="width: 49%">
-                                    <div class="card-body">
-                                        <h4 class="card-title mb-4">Ваши данные</h4>
-                                            <div class="row">
-                                                <div class="form-group col-sm-6">
-                                                    <label>Имя *</label>
-                                                    <input type="text" placeholder="" name="first_name"
-                                                           class="form-control" required>
-                                                </div>
-                                                <div class="form-group col-sm-6">
-                                                    <label>Фамилия *</label>
-                                                    <input type="text" placeholder="" name="last_name"
-                                                           class="form-control" required>
-                                                </div>
-                                                <div class="form-group col-sm-12">
-                                                    <label>Контактный телефон *</label>
-                                                    <input type="text" value="" name="phone" class="form-control" required>
-                                                </div>
-                                                <div class="form-group col-sm-8">
-                                                    <label>Электронная почта</label>
-                                                    <input type="email" name="email" placeholder="example@mail.ru"
-                                                           class="form-control" required>
-                                                </div>
-                                            </div> <!-- row.// -->
-                                    </div> <!-- card-body.// -->
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-md-3">
@@ -152,11 +158,11 @@
                                     <button type="submit" name="submit" class="btn btn-lg my-2 btn-outline-success">
                                         Заказать
                                     </button>
-                                    </form>
 
                                 </div>
                             </div>
                         </div>
+                        </form>
 
                     </div>
                 </div>

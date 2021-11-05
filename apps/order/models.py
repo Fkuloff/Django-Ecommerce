@@ -27,15 +27,15 @@ class Order(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     order_number = models.CharField(max_length=20)
 
-    first_name = models.CharField(max_length=64)
-    last_name = models.CharField(max_length=64)
-    email = models.EmailField(max_length=64)
-    phone = models.CharField(max_length=64)
+    first_name = models.CharField(max_length=64, blank=True, null=True)
+    last_name = models.CharField(max_length=64, blank=True, null=True)
+    email = models.EmailField(max_length=64, blank=True, null=True)
+    phone = models.CharField(max_length=64, blank=True, null=True)
 
-    street = models.CharField(max_length=64, null=True)
-    house = models.CharField(max_length=64, null=True)
-    entrance = models.CharField(max_length=64, null=True)
-    floor = models.CharField(max_length=64, null=True)
+    street = models.CharField(max_length=64)
+    house = models.CharField(max_length=64)
+    entrance = models.CharField(max_length=64)
+    floor = models.CharField(max_length=64)
 
     order_note = models.CharField(max_length=100, blank=True)
 
@@ -51,8 +51,11 @@ class Order(models.Model):
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
+    def full_address(self):
+        return f'{self.street} {self.house} {self.entrance} {self.floor}'
+
     def __str__(self):
-        return self.first_name
+        return self.order_number
 
 
 class OrderProduct(models.Model):

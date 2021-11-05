@@ -77,12 +77,7 @@ def payments(request):
 
 def place_order(request, total=0, quantity=0):
     current_user = request.user
-
     cart_items = CartItem.objects.filter(user=current_user)
-    cart_count = cart_items.count()
-
-    if cart_count <= 0:
-        return redirect('store')
 
     for cart_item in cart_items:
         total += (cart_item.variation.price * cart_item.quantity)
@@ -94,11 +89,11 @@ def place_order(request, total=0, quantity=0):
             data = Order()
 
             data.user = current_user
-            data.first_name = form.cleaned_data['first_name']
-            data.last_name = form.cleaned_data['last_name']
+            data.first_name = current_user.first_name
+            data.last_name = current_user.last_name
 
-            data.email = form.cleaned_data['email']
-            data.phone = form.cleaned_data['phone']
+            data.email = current_user.email
+            data.phone = current_user.phone_number
 
             data.street = form.cleaned_data['street']
             data.house = form.cleaned_data['house']
