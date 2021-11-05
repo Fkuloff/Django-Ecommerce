@@ -49,25 +49,13 @@ def product_detail(request, product_slug, variation_vendor_code):
 
         product_gallery = VariationGallery.objects.filter(variation=variation)
         sizes = Size.objects.filter(variation=variation)
-
     except Exception as e:
         raise e
-
-    if request.user.is_authenticated:
-        try:
-            order_product = OrderProduct.objects.filter(user=request.user, product_id=single_product.id).exists()
-        except OrderProduct.DoesNotExist:
-            order_product = None
-    else:
-        order_product = None
-
-    # get reviews
 
     reviews = ReviewRating.objects.filter(variation=variation, status=True)
 
     context = {
         'single_product': single_product,
-        # 'order_product': order_product,
         'variations_of_single_product': variations_of_single_product,
 
         'variation': variation,

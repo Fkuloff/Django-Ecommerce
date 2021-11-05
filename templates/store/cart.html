@@ -5,9 +5,7 @@
 
     <section class="bg-light py-3">
         <div class="container ">
-
             {% if not cart_items %}
-
                 <div class="py-5">
                     <h2 class="text-center pt-3">В корзине пока ничего нет</h2>
                     <p class="text-center text-muted my-5">Начните с главной страницы или воспользуйтесь поиском, чтобы
@@ -17,9 +15,7 @@
                         <a href="{% url 'store' %}" class="btn btn-outline-primary">Перейти в каталог</a>
                     </div>
                 </div>
-
             {% else %}
-
                 <div class="container">
                     <div class="row">
                         <div class="col-md-9 row">
@@ -140,9 +136,7 @@
                                                 </div> <!-- row.// -->
                                             </div> <!-- card-body.// -->
                                         </div>
-
                                     {% endif %}
-
                                 </div>
                         </div>
 
@@ -158,17 +152,14 @@
                                     <button type="submit" name="submit" class="btn btn-lg my-2 btn-outline-success">
                                         Заказать
                                     </button>
-
                                 </div>
                             </div>
                         </div>
                         </form>
-
                     </div>
                 </div>
-
             {% endif %}
-        </div> <!-- container .//  -->
+        </div>
     </section>
 
 {% endblock %}

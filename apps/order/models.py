@@ -1,6 +1,6 @@
 from django.db import models
 from apps.accounts.models import Account
-from apps.store.models import Product
+from apps.store.models import Product, Variation, Size
 
 
 class Payment(models.Model):
@@ -63,9 +63,8 @@ class OrderProduct(models.Model):
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    # variations = models.ManyToManyField(Variation, blank=True)
+    variation = models.ForeignKey(Variation, on_delete=models.CASCADE, null=True)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True)
 
     quantity = models.IntegerField()
     product_price = models.FloatField()
@@ -76,4 +75,7 @@ class OrderProduct(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.product.product_name
+        return self.variation.product.product_name
+
+    def sub_total(self):
+        return self.product_price * self.quantity

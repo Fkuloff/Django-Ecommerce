@@ -1,7 +1,7 @@
 from django.core.mail import EmailMessage
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from apps.store.models import Product
+from apps.store.models import Size
 from django.shortcuts import render, redirect
 from apps.cart.models import CartItem
 from .forms import OrderForm
@@ -31,30 +31,36 @@ def payments(request):
 
     for item in cart_items:
         order_product = OrderProduct()
+
         order_product.order_id = order.id
         order_product.payment = payment
         order_product.user_id = request.user.id
-        order_product.product_id = item.product_id
+
+        order_product.variation = item.variation
+        order_product.size = item.size
+
         order_product.quantity = item.quantity
-        order_product.product_price = item.product.price
+        order_product.product_price = item.variation.price
+
         order_product.ordered = True
+
         order_product.save()
 
-        cart_item = CartItem.objects.get(id=item.id)
-        product_variations = cart_item.variations.all()
-        order_product = OrderProduct.objects.get(id=order_product.id)
-        order_product.variations.set(product_variations)
-        order_product.save()
+        # cart_item = CartItem.objects.get(id=item.id)
+        # product_variations = cart_item.variations.all()
+        # order_product = OrderProduct.objects.get(id=order_product.id)
+        # order_product.variations.set(product_variations)
+        # order_product.save()
 
-        #
-        product = Product.objects.get(id=item.product_id)
-        product.stock -= item.quantity
-        product.save()
+        # TODO Size quantity
+        size = Size.objects.get(id=item.size.id)
+        print(size)
 
-    #
+        # size.quantity -= item.quantity
+        # size.save()
+
     CartItem.objects.filter(user=request.user).delete()
 
-    #
     try:
         mail_subject = 'Thank you for your order!'
         message = render_to_string('orders/order_received_email.html', {
