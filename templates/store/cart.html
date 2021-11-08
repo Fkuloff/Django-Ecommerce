@@ -109,7 +109,7 @@
                                         </div> <!-- card-body.// -->
                                     </div>
 
-                                    {% if not request.user %}
+                                    {% if not request.user.is_authenticated %}
                                         <div class="card col-md-6 p-4" style="width: 49%">
                                             <div class="card-body">
                                                 <h4 class="card-title mb-4">Ваши данные</h4>
