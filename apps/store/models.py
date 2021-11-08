@@ -1,8 +1,9 @@
 from django.db import models
 from django.db.models import Avg, Count
 from django.urls import reverse
-from apps.category.models import Category
+
 from apps.accounts.models import Account
+from apps.category.models import Category
 from apps.review.models import ReviewRating
 
 

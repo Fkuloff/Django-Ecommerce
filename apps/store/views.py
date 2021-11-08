@@ -1,9 +1,9 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
-from .models import Product, VariationGallery, Variation, Size, Specification
-from django.core.paginator import Paginator
-from apps.order.models import OrderProduct
+
 from apps.review.models import ReviewRating
+from .models import Product, VariationGallery, Variation, Size, Specification
 
 
 def store(request):

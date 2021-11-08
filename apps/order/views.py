@@ -1,13 +1,15 @@
-from django.core.mail import EmailMessage
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from apps.store.models import Size
-from django.shortcuts import render, redirect
-from apps.cart.models import CartItem
-from .forms import OrderForm
-from .models import Order, Payment, OrderProduct
 import datetime
 import json
+
+from django.core.mail import EmailMessage
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+
+from apps.cart.models import CartItem
+from apps.store.models import Size
+from .forms import OrderForm
+from .models import Order, Payment, OrderProduct
 
 
 def payments(request):

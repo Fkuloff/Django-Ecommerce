@@ -1,7 +1,8 @@
-from django.contrib import admin
-from .models import *
 import admin_thumbnails
 import nested_admin
+from django.contrib import admin
+
+from .models import *
 
 
 @admin_thumbnails.thumbnail('image')

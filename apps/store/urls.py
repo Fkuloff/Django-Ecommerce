@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import path
+
 from .views import store, product_detail, search
 
 urlpatterns = [

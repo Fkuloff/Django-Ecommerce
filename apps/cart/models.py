@@ -1,6 +1,7 @@
 from django.db import models
-from apps.store.models import Product, Variation, Size
+
 from apps.accounts.models import Account
+from apps.store.models import Product, Variation, Size
 
 
 class Cart(models.Model):

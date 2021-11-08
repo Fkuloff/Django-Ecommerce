@@ -1,7 +1,8 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from .models import ReviewRating
+from django.shortcuts import redirect
+
 from .forms import ReviewForm
+from .models import ReviewRating
 
 
 def submit_review(request, variation_vendor_code):

@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import path
+
 from .views import register, login, logout, activate, dashboard, forgotPassword, resetpassword_validate, resetPassword, \
     my_orders, change_password, order_detail
 

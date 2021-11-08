@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from apps.store.models import Product, Variation, VariationGallery
+
+from apps.store.models import Product, Variation
 
 
 def home(request):

@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from apps.store.models import Product, Variation, Size
-from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+
+from apps.store.models import Variation, Size
+from .models import Cart, CartItem
 
 
 def _cart_id(request):

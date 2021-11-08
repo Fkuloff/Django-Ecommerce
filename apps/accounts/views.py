@@ -1,22 +1,19 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+import requests
 from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .forms import RegistrationForm, UserForm
-from .models import Account
 from apps.cart.models import Cart, CartItem
 from apps.cart.views import _cart_id
 from apps.order.models import Order, OrderProduct
-
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.core.mail import EmailMessage
-from django.contrib.auth.tokens import default_token_generator
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
-import requests
+from .forms import RegistrationForm
+from .models import Account
 
 
 def register(request):
