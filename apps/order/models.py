@@ -1,11 +1,14 @@
 from django.db import models
 
 from apps.accounts.models import Account
+from apps.cart.models import Cart
 from apps.store.models import Product, Variation, Size
 
 
 class Payment(models.Model):
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
+
     payment_id = models.CharField(max_length=100)
     payment_method = models.CharField(max_length=100)
     amount_paid = models.CharField(max_length=100)
@@ -24,7 +27,9 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
     )
 
-    user = models.ForeignKey(Account, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(Account, on_delete=models.SET_NULL, blank=True, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True, null=True)
+
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
     order_number = models.CharField(max_length=20)
 
@@ -62,7 +67,9 @@ class Order(models.Model):
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, blank=True, null=True)
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
 
     variation = models.ForeignKey(Variation, on_delete=models.CASCADE, null=True)
     size = models.ForeignKey(Size, on_delete=models.CASCADE, null=True)
