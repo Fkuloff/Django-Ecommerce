@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 from apps.review.models import ReviewRating
+from apps.order.models import OrderProduct
 from .models import Product, VariationGallery, Variation, Size, Specification
 
 
@@ -49,15 +50,17 @@ def product_detail(request, product_slug, variation_vendor_code):
 
         product_gallery = VariationGallery.objects.filter(variation=variation)
         sizes = Size.objects.filter(variation=variation)
+
+        order_product = OrderProduct.objects.filter(variation__product=single_product)
+
+        reviews = ReviewRating.objects.filter(product=single_product, status=True)
     except Exception as e:
         raise e
-
-    reviews = ReviewRating.objects.filter(variation=variation, status=True)
 
     context = {
         'single_product': single_product,
         'variations_of_single_product': variations_of_single_product,
-
+        'order_product': order_product,
         'variation': variation,
         'sizes': sizes,
         'reviews': reviews,

@@ -4,7 +4,7 @@ from .models import ReviewRating
 
 
 class ReviewRatingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'variation', 'rating', 'subject')
+    list_display = ('user', 'product', 'rating', 'subject')
 
 
 admin.site.register(ReviewRating, ReviewRatingAdmin)

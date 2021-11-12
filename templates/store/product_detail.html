@@ -56,18 +56,18 @@
                             <h4 class="">{{ variation.price }} руб</h4>
                             <div class="rating-star">
                                 <span class="star">
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review <= 1 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 0.5 %}-o{% elif single_product.average_review >= 0.5 and single_product.average_review < 1 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review <= 2 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 1.5 %}-o{% elif single_product.average_review >= 1.5 and single_product.average_review < 2 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review <= 3 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 2.5 %}-o{% elif single_product.average_review >= 2.5 and single_product.average_review < 3 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review <= 4 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 3.5 %}-o{% elif single_product.average_review >= 3.5 and single_product.average_review < 4 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review <= 5 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 4.5 %}-o{% elif single_product.average_review >= 4.5 and single_product.average_review < 5 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
                                 </span>
-                                <span>{{ variation.count_review }} отзыв</span>
+                                <span>{{ single_product.count_review }} отзывов</span>
                             </div>
 
                             {% if variations_of_single_product.count > 1 %}
@@ -209,7 +209,7 @@
                                 <textarea name="review" class="form-control" id="" rows="4"></textarea>
                                 <br>
 
-                                <input type="submit" class="btn btn-primary" value="Submit Review">
+                                <input type="submit" class="btn btn-outline-primary btn-lg" value="Отправить">
                             {% else %}
                                 <h5 class="text-center my-5">Чтобы отставить отзыв вы должны приобрести этот товар</h5>
                             {% endif %}
@@ -218,32 +218,31 @@
                         {% endif %}
 
                         </div>
-                        {% include 'inc/alerts.html' %}
                     </form>
 
-                    <div class="d-flex my-5 pb-5">
+                    <div class="d-flex my-5">
                         <h3 class="me-auto">Отзывы клиентов:</h3>
 
                         <div class="rating-star">
                                 <span>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 0.5 %}-o{% elif variation.average_review >= 0.5 and variation.average_review < 1 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 0.5 %}-o{% elif single_product.average_review >= 0.5 and single_product.average_review < 1 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 1.5 %}-o{% elif variation.average_review >= 1.5 and variation.average_review < 2 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 1.5 %}-o{% elif single_product.average_review >= 1.5 and single_product.average_review < 2 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 2.5 %}-o{% elif variation.average_review >= 2.5 and variation.average_review < 3 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 2.5 %}-o{% elif single_product.average_review >= 2.5 and single_product.average_review < 3 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 3.5 %}-o{% elif variation.average_review >= 3.5 and variation.average_review < 4 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 3.5 %}-o{% elif single_product.average_review >= 3.5 and single_product.average_review < 4 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
-                                    <i class="fa fa-lg fa-star{% if variation.average_review < 4.5 %}-o{% elif variation.average_review >= 4.5 and variation.average_review < 5 %}-half-o {% endif %}"
+                                    <i class="fa fa-lg fa-star{% if single_product.average_review < 4.5 %}-o{% elif single_product.average_review >= 4.5 and single_product.average_review < 5 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
                                 </span>
-                            <span>{{ variation.count_review }} отзыв</span>
+                            <span>{{ single_product.count_review }} отзывов</span>
                         </div>
                     </div>
                     {% if reviews %}
                         {% for review in reviews %}
 
-                            <div class="card " style="background-color:#ffffff;">
+                            <div class="card mb-5" style="background-color:#ffffff;">
                                 <div class="card-header d-flex">
                                     <h6 class="mb-1 me-auto">{{ review.user.full_name }} </h6>
                                     <div class="rating-star">
@@ -275,11 +274,8 @@
                     {% endif %}
                 </div>
             </div>
-
-
         </div>
     </section>
-
 
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 

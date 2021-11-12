@@ -67,15 +67,8 @@ def payments(request):
 
         order_product.save()
 
-        # cart_item = CartItem.objects.get(id=item.id)
-        # product_variations = cart_item.variations.all()
-        # order_product = OrderProduct.objects.get(id=order_product.id)
-        # order_product.variations.set(product_variations)
-        # order_product.save()
-
         # TODO Size quantity
         size = Size.objects.get(id=item.size.id)
-        print(size)
 
         # size.quantity -= item.quantity
         # size.save()

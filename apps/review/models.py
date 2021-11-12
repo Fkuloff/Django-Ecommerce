@@ -4,7 +4,7 @@ from apps.accounts.models import Account
 
 
 class ReviewRating(models.Model):
-    variation = models.ForeignKey('store.Variation', on_delete=models.CASCADE)
+    product = models.ForeignKey("store.Product", on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     subject = models.CharField(max_length=100, blank=True)
