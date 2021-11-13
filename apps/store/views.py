@@ -8,12 +8,7 @@ from .models import Product, VariationGallery, Variation, Size, Specification
 
 
 def store(request):
-    products = Product.objects.filter(is_available=True).order_by('created_date')
-
-    variations = []
-    for p in products:
-        variation = Variation.objects.filter(product=p).first()
-        variations.append(variation)
+    variations = Variation.objects.all()
 
     # if category_slug is not None:
     #     categories = get_object_or_404(Category, slug=category_slug)
