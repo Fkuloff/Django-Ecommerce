@@ -284,12 +284,13 @@ def change_password(request):
             messages.error(request, 'Password does not match!')
             return redirect('change_password')
 
-    return render(request, 'accounts/change_password.html')
+    return render(request, 'dashboard/change_password.html')
 
 
 @login_required(login_url='login')
 def order_detail(request, order_id):
     order_products = OrderProduct.objects.filter(order__order_number=order_id)
+
     order = Order.objects.get(order_number=order_id)
 
     subtotal = 0
