@@ -76,13 +76,13 @@ def search(request):
     variations_count = 0
     if 'keyword' in request.GET:
         keyword = request.GET['keyword']
+        print(keyword)
         if keyword:
-            variations = Variation.objects.order_by('-created_date').filter(
+            variations = Variation.objects.filter(
                 Q(product__description__icontains=keyword) | Q(product__product_name__icontains=keyword))
             variations_count = variations.count()
     context = {
         'variations': variations,
         'variations_count': variations_count,
     }
-
     return render(request, 'store/store.html', context)

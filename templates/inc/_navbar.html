@@ -50,10 +50,10 @@
                             </li>
 
                             <li class="nav-item mx-4">
-                                <form action="{% url 'search' %}" class="search">
+                                <form action="{% url 'search' %}" class="search" method="GET">
                                     <div class="input-group w-100">
                                         <input type="text" class="form-control" style="width: 350px;"
-                                               placeholder="Я ищу...">
+                                               placeholder="Я ищу..." name="keyword">
 
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">
