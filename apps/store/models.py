@@ -9,7 +9,7 @@ from apps.review.models import ReviewRating
 
 class Product(models.Model):
     product_name = models.CharField(max_length=128, unique=True)
-    slug = models.SlugField(unique=True)
+    # slug = models.SlugField(unique=True)
 
     composition = models.TextField(max_length=64, blank=True)
     description = models.TextField(blank=True)

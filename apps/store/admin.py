@@ -29,7 +29,7 @@ class VariationsInline(nested_admin.NestedStackedInline):
 
 
 class ProductAdmin(nested_admin.NestedModelAdmin):
-    prepopulated_fields = {'slug': ('product_name',)}
+    # prepopulated_fields = {'slug': ('product_name',)}
     inlines = [SpecificationsInline, VariationsInline]
     list_display = ('product_name', 'seller', 'created_date', 'is_available')
 
