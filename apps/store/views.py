@@ -23,14 +23,14 @@ def store(request):
     return render(request, 'store/store.html', context)
 
 
-def product_detail(request, product_slug, variation_vendor_code):
+def product_detail(request, variation_vendor_code):
     try:
-        single_product = Product.objects.get(slug=product_slug)
+        variation = Variation.objects.get(vendor_code=variation_vendor_code)
+
+        single_product = Product.objects.get(variation=variation)
         specifications = Specification.objects.filter(product=single_product)
 
         variations_of_single_product = Variation.objects.filter(product=single_product)
-
-        variation = Variation.objects.get(vendor_code=variation_vendor_code)
 
         product_gallery = VariationGallery.objects.filter(variation=variation)
         sizes = Size.objects.filter(variation=variation)

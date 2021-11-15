@@ -73,7 +73,7 @@ class Variation(models.Model):
 
     def get_absolute_url(self):
         return reverse('product_detail',
-                       kwargs={"variation_vendor_code": self.vendor_code, 'product_slug': self.product.slug})
+                       kwargs={"variation_vendor_code": self.vendor_code})
 
 
 class Size(models.Model):
