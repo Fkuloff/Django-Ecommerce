@@ -21,24 +21,23 @@
             </div>
 
 
-            <div class="row my-3">
-                <div class="row justify-content-center">
-                    {% for variation in variations %}
+            <div class="row justify-content-center mt-3">
+                {% for variation in variations %}
 
-                        <div class="card text-center col-md-3 p-1 mx-1 my-2 " style="width: 24%;">
+                    <div class="card text-center col-md-3 p-1 mx-1 my-2 " style="width: 24%;">
 
-                            <a href="{{ variation.get_absolute_url }}" class="mt-2">
-                                <img width="80%"
-                                     style="border-radius: 5%"
-                                     class="d-block mx-auto mt-2 shadow"
-                                     src="{{ variation.get_variation_gallery.image.url }}">
-                            </a>
+                        <a href="{{ variation.get_absolute_url }}" class="mt-2">
+                            <img width="80%"
+                                 style="border-radius: 5%"
+                                 class="d-block mx-auto mt-2 shadow"
+                                 src="{{ variation.get_variation_gallery.image.url }}">
+                        </a>
 
-                            <div class="card-body">
-                                <h5 class="card-title">{{ variation.product.product_name|truncatechars:25 }}</h5>
-                                <p class="card-text mb-1">{{ variation.price }} руб</p>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ variation.product.product_name|truncatechars:25 }}</h5>
+                            <p class="card-text mb-1">{{ variation.price }} руб</p>
 
-                                <div class="rating-star">
+                            <div class="rating-star">
                                 <span>
                                     <i class="fa fa-lg fa-star{% if variation.product.average_review < 0.5 %}-o{% elif variation.product.average_review >= 0.5 and variation.product.average_review < 1 %}-half-o {% endif %}"
                                        aria-hidden="true"></i>
@@ -52,16 +51,15 @@
                                        aria-hidden="true"></i>
                                 </span>
 
-                                </div>
-
                             </div>
+
                         </div>
+                    </div>
 
-                    {% endfor %}
-
-                </div>
+                {% endfor %}
 
             </div>
+
         </div>
     </section>
 

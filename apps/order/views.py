@@ -69,9 +69,8 @@ def payments(request):
 
         # TODO Size quantity
         size = Size.objects.get(id=item.size.id)
-
-        # size.quantity -= item.quantity
-        # size.save()
+        size.quantity -= item.quantity
+        size.save()
 
     if request.user.is_authenticated:
         CartItem.objects.filter(user=request.user).delete()
