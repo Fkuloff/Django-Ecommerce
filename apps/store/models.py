@@ -15,7 +15,7 @@ class Product(models.Model):
     description = models.TextField(blank=True)
     seller = models.CharField(max_length=64, blank=True)
 
-    main_img = models.ImageField(upload_to='store/products', max_length=255)
+    # main_img = models.ImageField(upload_to='store/products', max_length=255)
 
     is_available = models.BooleanField(default=True)
 
