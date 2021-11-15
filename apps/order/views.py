@@ -81,7 +81,7 @@ def payments(request):
 
     try:
         mail_subject = 'Thank you for your order!'
-        message = render_to_string('orders/order_received_email.html', {
+        message = render_to_string('email/order_received_email.html', {
             'user': request.user,
             'order': order,
         })

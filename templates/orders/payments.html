@@ -33,7 +33,7 @@
                             {% for item in cart_items %}
                                 <div class="mb-4 d-flex row">
                                     <div class="col-md-2 mx-2 my-auto">
-                                        <img src="{{ item.variation.product.main_img.url }}" class="shadow"
+                                        <img src="{{ item.variation.get_variation_gallery.image.url }}" class="shadow"
                                              style="height: 150px; border-radius: 3%">
                                     </div>
                                     <div class="col-md-5 my-auto">
@@ -94,8 +94,10 @@
         </div>
     </div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=RUB"
-            data-sdk-integration-source="button-factory"></script>
+{#    <script src="https://www.paypal.com/sdk/js?client-id=sb&enable-funding=venmo&currency=RUB"#}
+{#            data-sdk-integration-source="button-factory"></script>#}
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AT4OQRmd9JQiG48nxtbPJEdZPsBYdE-ITVufk5FoLSaswtzW7-EKW8dgD0tl9La5GNzGyQgjaF-ZwfJy&currency=RUB"></script>
 
     <script>
         function getCookie(name) {
