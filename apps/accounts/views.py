@@ -71,44 +71,44 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            try:
-                cart = Cart.objects.get(cart_id=_cart_id(request))
-                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-                if is_cart_item_exists:
-                    cart_item = CartItem.objects.filter(cart=cart)
-
-                    product_variation = []
-                    for item in cart_item:
-                        var = item.variations.all()
-                        product_variation.append(list(var))
-
-                    # get cart items from the user to access product variations
-                    cart_item = CartItem.objects.filter(user=user)
-                    ex_var_list = []
-                    id = []
-
-                    for item in cart_item:
-                        id.append(item.id)
-                        existing_variation = item.variations.all()
-                        ex_var_list.append(list(existing_variation))
-
-                    for pr in product_variation:
-                        if pr in ex_var_list:
-                            index = ex_var_list.index(pr)
-                            item_id = id[index]
-                            item = CartItem.objects.get(id=item_id)
-                            item.quantity += 1  # bug
-                            item.user = user
-                            item.save()
-                        else:
-                            cart_item = CartItem.objects.filter(cart=cart)
-                            for item in cart_item:
-                                item.user = user
-                                item.save()
-            except Exception as e:
-                pass
+            # try:
+            #     cart = Cart.objects.get(cart_id=_cart_id(request))
+            #     is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+            #     if is_cart_item_exists:
+            #         cart_item = CartItem.objects.filter(cart=cart)
+            #
+            #         product_variation = []
+            #         for item in cart_item:
+            #             var = item.variations.all()
+            #             product_variation.append(list(var))
+            #
+            #         # get cart items from the user to access product variations
+            #         cart_item = CartItem.objects.filter(user=user)
+            #         ex_var_list = []
+            #         id = []
+            #
+            #         for item in cart_item:
+            #             id.append(item.id)
+            #             existing_variation = item.variations.all()
+            #             ex_var_list.append(list(existing_variation))
+            #
+            #         for pr in product_variation:
+            #             if pr in ex_var_list:
+            #                 index = ex_var_list.index(pr)
+            #                 item_id = id[index]
+            #                 item = CartItem.objects.get(id=item_id)
+            #                 item.quantity += 1  # bug
+            #                 item.user = user
+            #                 item.save()
+            #             else:
+            #                 cart_item = CartItem.objects.filter(cart=cart)
+            #                 for item in cart_item:
+            #                     item.user = user
+            #                     item.save()
+            # except Exception as e:
+            #     pass
             auth.login(request, user)
-            messages.success(request, 'You are now logged in')
+            messages.success(request, 'Вы вошли в систему')
 
             url = request.META.get('HTTP_REFERER')
             try:
@@ -122,7 +122,7 @@ def login(request):
             except:
                 return redirect('dashboard')
         else:
-            messages.error(request, 'Invalid login credentials')
+            messages.error(request, 'Неверные логин или пароль')
             return redirect('login')
 
     return render(request, 'accounts/login.html')
@@ -167,7 +167,7 @@ def dashboard(request):
     return render(request, 'accounts/../../templates/dashboard/dashboard.html', context)
 
 
-def forgotPassword(request):
+def forgot_password(request):
     if request.method == "POST":
         email = request.POST['email']
         if Account.objects.filter(email=email).exists():
@@ -196,7 +196,7 @@ def forgotPassword(request):
     return render(request, 'accounts/forgot_password.html')
 
 
-def resetpassword_validate(request, uidb64, token):
+def reset_password_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = Account._default_manager.get(pk=uid)
@@ -212,7 +212,7 @@ def resetpassword_validate(request, uidb64, token):
         return redirect('login')
 
 
-def resetPassword(request):
+def reset_password(request):
     if request.method == 'POST':
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -235,7 +235,7 @@ def my_orders(request):
     context = {
         'orders': orders,
     }
-    return render(request, 'accounts/../../templates/dashboard/my_orders.html', context)
+    return render(request, 'dashboard/my_orders.html', context)
 
 
 # @login_required(login_url='login')
@@ -268,20 +268,20 @@ def change_password(request):
         new_password = request.POST['new_password']
         confirm_password = request.POST['confirm_password']
 
-        user = Account.objects.get(username__exact=request.user.username)
+        user = Account.objects.get(email__exact=request.user.email)
 
         success = user.check_password(current_password)
         if new_password == confirm_password:
             if success:
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, 'Password updated successfully.')
+                messages.success(request, 'Пароль успешно обновлен')
                 return redirect('change_password')
             else:
-                messages.error(request, 'Enter valid password')
+                messages.error(request, 'Введите действующий пароль')
                 return redirect('change_password')
         else:
-            messages.error(request, 'Password does not match!')
+            messages.error(request, 'Пароль не подходит!')
             return redirect('change_password')
 
     return render(request, 'dashboard/change_password.html')

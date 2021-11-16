@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import register, login, logout, activate, dashboard, forgotPassword, resetpassword_validate, resetPassword, \
+from .views import register, login, logout, activate, dashboard, forgot_password, reset_password_validate, reset_password, \
     my_orders, change_password, order_detail
 
 urlpatterns = [
@@ -11,9 +11,9 @@ urlpatterns = [
     path('', dashboard, name='dashboard'),
 
     path('activate/<uidb64>/<token>', activate, name='activate'),
-    path('resetpassword_validate/<uidb64>/<token>', resetpassword_validate, name='resetpassword_validate'),
-    path('forgotPassword/', forgotPassword, name='forgotPassword'),
-    path('resetPassword/', resetPassword, name='resetPassword'),
+    path('resetpassword_validate/<uidb64>/<token>', reset_password_validate, name='resetpassword_validate'),
+    path('forgotPassword/', forgot_password, name='forgotPassword'),
+    path('resetPassword/', reset_password, name='resetPassword'),
 
     path('my_orders/', my_orders, name='my_orders'),
     # path('edit_profile/', edit_profile, name='edit_profile'),
