@@ -4,8 +4,8 @@
             Личный кабинет </a>
         <a class="list-group-item {% if '/my_orders/' in request.path %} active {% endif %}"
            href="{% url 'my_orders' %}"> Мои заказы </a>
-{#        <a class="list-group-item {% if '/edit_profile/' in request.path %}active {% endif %}"#}
-{#           href="{% url 'edit_profile' %}"> Edit Profile </a>#}
+        <a class="list-group-item {% if '/edit_profile/' in request.path %}active {% endif %}"
+           href="{% url 'edit_profile' %}"> Редактировать профиль </a>
         <a class="list-group-item {% if '/change_password/' in request.path %} active {% endif %}"
            href="{% url 'change_password' %}"> Измени пароль </a>
         <a class="list-group-item" href="#"> Мои товары для продажи </a>

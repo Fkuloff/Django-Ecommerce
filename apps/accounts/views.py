@@ -12,7 +12,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from apps.cart.models import Cart, CartItem
 from apps.cart.views import _cart_id
 from apps.order.models import Order, OrderProduct
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserForm
 from .models import Account
 
 
@@ -238,27 +238,21 @@ def my_orders(request):
     return render(request, 'dashboard/my_orders.html', context)
 
 
-# @login_required(login_url='login')
-# def edit_profile(request):
-#     user_profile = get_object_or_404(UserProfile, user=request.user)
-#     if request.method == 'POST':
-#         user_form = UserForm(request.POST, instance=request.user)
-#         profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
-#         if user_form.is_valid() and profile_form.is_valid():
-#             user_form.save()
-#             profile_form.save()
-#             messages.success(request, 'Your profile has been updated.')
-#             return redirect('edit_profile')
-#     else:
-#         user_form = UserForm(instance=request.user)
-#         profile_form = UserProfileForm(instance=user_profile)
-#     context = {
-#         'user_form': user_form,
-#         'profile_form': profile_form,
-#         'user_profile': user_profile,
-#     }
-#
-#     return render(request, 'accounts/../../templates/dashboard/edit_profile.html', context)
+@login_required(login_url='login')
+def edit_profile(request):
+    if request.method == "POST":
+        user_form = UserForm(request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Ваш профиль был обновлен')
+            return redirect('edit_profile')
+    else:
+        user_form = UserForm(instance=request.user)
+    context = {
+        'user_form': user_form,
+    }
+
+    return render(request, 'dashboard/edit_profile.html', context)
 
 
 @login_required(login_url='login')

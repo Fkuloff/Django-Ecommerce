@@ -11,16 +11,17 @@
                 {% include 'inc/_dashboard_menu.html' %}
 
                 <main class="col-md-9">
-                    <article class="card">
+                    <div class="card">
                         <header class="card-header">
-                            <strong class="d-inline-block mr-3">Edit profile html</strong>
+                            <b class="d-inline-block mr-3">Редактировать профиль</b>
                         </header>
+
+                        {% include 'inc/alerts.html' %}
+
                         <div class="card-body">
                             <div class="text-center">
-                                {% if user_profile.profile_avatar %}
-                                    <img src="{{ user_profile.profile_avatar.url }}" alt="Profile Avatar" width="100"
-                                         style="border-radius: 50%;">
-                                {% endif %}
+                                <img src="{{ user_form.profile_avatar.url }}" alt="Profile Avatar" width="100"
+                                     style="border-radius: 50%;">
                             </div>
 
                             <div class="row">
@@ -28,60 +29,35 @@
                                 <div class="col-md-12">
                                     <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
-                                        <div class="form-row">
+                                        <div class="">
                                             <div class="form-group col-md-6">
-                                                <label for="">First name</label>
+                                                <label for="">Имя</label>
                                                 {{ user_form.first_name }}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label for="">Last name</label>
+                                                <label for="">Фамилия</label>
                                                 {{ user_form.last_name }}
                                             </div>
                                         </div>
-                                        <div class="form-row">
+                                        <div class="">
                                             <div class="form-group col-md-6">
-                                                <label for="">Phone</label>
+                                                <label for="">Телефон</label>
                                                 {{ user_form.phone_number }}
                                             </div>
                                             <div class="form-group col-md-6">
-                                                <label for="formFile" class="form-label">Avatar</label>
-                                                {{ profile_form.profile_avatar }}
+                                                <label for="formFile" class="form-label">Аватарка</label>
+                                                {{ user_form.profile_avatar }}
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="">Address line 1</label>
-                                            {{ profile_form.address_line_1 }}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Address line 2</label>
-                                            {{ profile_form.address_line_2 }}
-                                        </div>
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-4">
-                                                <label for="">Country</label>
-                                                {{ profile_form.country }}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="">State</label>
-                                                {{ profile_form.state }}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label for="">City</label>
-                                                {{ profile_form.city }}
-                                            </div>
-                                        </div>
-                                        <input type="submit" value="Save" class="btn btn-primary">
+                                        <input type="submit" value="Сохранить" class="btn btn-primary mt-3">
 
                                     </form>
                                 </div>
-
-                            </div> <!-- row.// -->
-                        </div> <!-- card-body .// -->
-
-                    </article> <!-- order-group.// -->
+                            </div>
+                        </div>
+                    </div>
                 </main>
-            </div> <!-- row.// -->
+            </div>
         </div>
 
 
