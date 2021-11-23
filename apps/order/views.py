@@ -28,7 +28,6 @@ def payments(request):
         payment.save()
     else:
         cart = Cart.objects.get(cart_id=_cart_id(request))
-        print(cart)
         order = Order.objects.get(cart=cart, is_ordered=False, order_number=body['orderID'])
         payment = Payment(
             cart=cart,
@@ -67,7 +66,6 @@ def payments(request):
 
         order_product.save()
 
-        # TODO Size quantity
         size = Size.objects.get(id=item.size.id)
         size.quantity -= item.quantity
         size.save()
@@ -140,6 +138,7 @@ def place_order(request, total=0, quantity=0):
 
             data.save()
 
+            # TODO переделать order_number
             yr = int(datetime.date.today().strftime('%Y'))
             dt = int(datetime.date.today().strftime('%d'))
             mt = int(datetime.date.today().strftime('%m'))
@@ -189,5 +188,4 @@ def order_complete(request):
     }
 
     return render(request, 'orders/order_complete.html', context)
-    # except {Payment.DoesNotExist, Order.DoesNotExist}:
-    #     return redirect('homepage')
+

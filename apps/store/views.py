@@ -8,7 +8,7 @@ from .models import Product, VariationGallery, Variation, Size, Specification
 
 
 def store(request):
-    variations = Variation.objects.all()
+    variations = Variation.objects.order_by('-id')
 
     variations_count = len(variations)
 
