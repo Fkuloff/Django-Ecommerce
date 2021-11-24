@@ -2,8 +2,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
 
-from apps.review.models import ReviewRating
 from apps.order.models import OrderProduct
+from apps.review.models import ReviewRating
 from .models import Product, VariationGallery, Variation, Size, Specification
 
 

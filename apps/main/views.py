@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from apps.store.models import Product, Variation
+from apps.store.models import Variation
 
 
 def home(request):

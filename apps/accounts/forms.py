@@ -12,26 +12,25 @@ class RegistrationForm(forms.ModelForm):
         'placeholder': 'Ваша фамилия',
     }))
     email = forms.CharField(widget=forms.EmailInput(attrs={
-        'placeholder': 'Email', 'type': 'email',
+        'placeholder': 'Email',
+    }))
+
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Телефон',
     }))
 
     password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Введите пароль', 'type': 'password',
+        'placeholder': 'Введите пароль',
     }),
         min_length=8,
     )
     confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
-        'placeholder': 'Подтвердите пароль', 'type': 'password',
-    }), min_length=8,
-    )
-
-    phone_number = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': 'Телефон', 'type': 'phone',
+        'placeholder': 'Подтвердите пароль',
     }))
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'password']
 
     def clean(self):
         cleaned_date = super(RegistrationForm, self).clean()

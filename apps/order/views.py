@@ -1,14 +1,14 @@
 import datetime
 import json
 
-from django.core.mail import EmailMessage
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
 from apps.cart.models import CartItem, Cart
-from apps.store.models import Size
 from apps.cart.views import _cart_id
+from apps.celeryapp.tasks import send_email_task
+from apps.store.models import Size
 from .forms import OrderForm
 from .models import Order, Payment, OrderProduct
 
@@ -77,14 +77,14 @@ def payments(request):
         CartItem.objects.filter(cart=cart).delete()
 
     try:
-        mail_subject = 'Thank you for your order!'
+        mail_subject = 'Спасибо за ваш заказ!'
         message = render_to_string('email/order_received_email.html', {
             'user': request.user,
             'order': order,
         })
-        to_email = request.user.email
-        send_email = EmailMessage(mail_subject, message, to=[to_email])
-        send_email.send()
+
+        send_email_task.delay(mail_subject, message, request.user.email)
+
     except Exception as e:
         print(e)
 
@@ -188,4 +188,3 @@ def order_complete(request):
     }
 
     return render(request, 'orders/order_complete.html', context)
-

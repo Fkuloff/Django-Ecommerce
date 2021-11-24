@@ -3,14 +3,12 @@ from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from apps.cart.models import Cart, CartItem
-from apps.cart.views import _cart_id
+from apps.celeryapp.tasks import send_email_task
 from apps.order.models import Order, OrderProduct
 from .forms import RegistrationForm, UserForm
 from .models import Account
@@ -18,6 +16,7 @@ from .models import Account
 
 def register(request):
     if request.method == "POST":
+
         form = RegistrationForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -25,14 +24,12 @@ def register(request):
             phone_number = form.cleaned_data['phone_number']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            # username = email.split('@')[0]
 
             user = Account.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
                 phone_number=phone_number,
-                # username=username,
                 password=password,
             )
             # user.phone_number = phone_number
@@ -40,21 +37,17 @@ def register(request):
 
             # User activation
             current_site = get_current_site(request)
-            mail_subject = 'Please activate your account'
-            try:
-                message = render_to_string('accounts/../../templates/email/account_verification_email.html', {
-                    'user': user,
-                    'domain': current_site,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': default_token_generator.make_token(user),
-                })
-                to_email = email
-                send_email = EmailMessage(mail_subject, message, to=[to_email])
-                send_email.send()
-            except Exception as e:
-                print(e)
+            mail_subject = 'Пожалуйста, активируйте свою учетную запись'
+            message = render_to_string('email/account_verification_email.html', {
+                'user': user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
 
-            # messages.success(request, 'We have sent you to verification email.')
+            send_email_task.delay(mail_subject, message, email)
+
+            messages.success(request, 'Мы отправили вам письмо с подтверждением.')
             return redirect('/accounts/login/?command=verification&email=' + email)
     else:
         form = RegistrationForm()
@@ -71,42 +64,6 @@ def login(request):
         user = auth.authenticate(email=email, password=password)
 
         if user is not None:
-            # try:
-            #     cart = Cart.objects.get(cart_id=_cart_id(request))
-            #     is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-            #     if is_cart_item_exists:
-            #         cart_item = CartItem.objects.filter(cart=cart)
-            #
-            #         product_variation = []
-            #         for item in cart_item:
-            #             var = item.variations.all()
-            #             product_variation.append(list(var))
-            #
-            #         # get cart items from the user to access product variations
-            #         cart_item = CartItem.objects.filter(user=user)
-            #         ex_var_list = []
-            #         id = []
-            #
-            #         for item in cart_item:
-            #             id.append(item.id)
-            #             existing_variation = item.variations.all()
-            #             ex_var_list.append(list(existing_variation))
-            #
-            #         for pr in product_variation:
-            #             if pr in ex_var_list:
-            #                 index = ex_var_list.index(pr)
-            #                 item_id = id[index]
-            #                 item = CartItem.objects.get(id=item_id)
-            #                 item.quantity += 1  # bug
-            #                 item.user = user
-            #                 item.save()
-            #             else:
-            #                 cart_item = CartItem.objects.filter(cart=cart)
-            #                 for item in cart_item:
-            #                     item.user = user
-            #                     item.save()
-            # except Exception as e:
-            #     pass
             auth.login(request, user)
             messages.success(request, 'Вы вошли в систему')
 
@@ -131,7 +88,7 @@ def login(request):
 @login_required(login_url='login')
 def logout(request):
     auth.logout(request)
-    messages.success(request, 'You are logged out.')
+    messages.success(request, 'Вы вышли из системы.')
     return redirect('login')
 
 
@@ -145,11 +102,11 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'You account is activated!')
+        messages.success(request, 'Ваш аккаунт активирован!')
 
         return redirect('login')
     else:
-        messages.error(request, 'Invalid activation link')
+        messages.error(request, 'Недействительная ссылка для активации.')
         return redirect('register')
 
 
@@ -158,13 +115,10 @@ def dashboard(request):
     order = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     orders_count = order.count()
 
-    # user_profile = UserProfile.objects.get(user_id=request.user.id)
-
     context = {
         'orders_count': orders_count,
-        # 'user_profile': user_profile,
     }
-    return render(request, 'accounts/../../templates/dashboard/dashboard.html', context)
+    return render(request, 'dashboard/dashboard.html', context)
 
 
 def forgot_password(request):
@@ -175,22 +129,20 @@ def forgot_password(request):
 
             # Reset password
             current_site = get_current_site(request)
-            mail_subject = 'Reset your password'
-            message = render_to_string('accounts/../../templates/email/reset_password_email.html', {
+            mail_subject = 'Сбросить пароль'
+            message = render_to_string('email/reset_password_email.html', {
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
             })
-            to_email = email
-            send_email = EmailMessage(mail_subject, message, to=[to_email])
-            send_email.send()
+            send_email_task.delay(mail_subject, message, email)
 
-            messages.success(request, 'Password reset email has been sent to your email address.')
+            messages.success(request, 'Письмо для сброса пароля было отправлено на ваш адрес электронной почты.')
             return redirect('login')
 
         else:
-            messages.error(request, 'Account does not exists!')
+            messages.error(request, 'Аккаунт не существует!')
             return redirect('forgotPassword')
 
     return render(request, 'accounts/forgot_password.html')
@@ -205,10 +157,10 @@ def reset_password_validate(request, uidb64, token):
 
     if user is not None and default_token_generator.check_token(user, token):
         request.session['uid'] = uid
-        messages.success(request, 'Reset your password')
+        messages.success(request, 'Сбросить пароль')
         return redirect('resetPassword')
     else:
-        messages.error(request, 'This link has been expired')
+        messages.error(request, 'Срок действия этой ссылки истек')
         return redirect('login')
 
 
@@ -221,10 +173,10 @@ def reset_password(request):
             user = Account.objects.get(pk=uid)
             user.set_password(password)
             user.save()
-            messages.success(request, 'Password reset successful')
+            messages.success(request, 'Сброс пароля выполнен успешно')
             return redirect('login')
         else:
-            messages.error(request, 'Password do not match')
+            messages.error(request, 'Пароль не совпадает')
             return redirect('resetPassword')
     return render(request, 'accounts/reset_password.html')
 

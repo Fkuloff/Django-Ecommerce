@@ -16,39 +16,41 @@
 
                             <form action="{% url 'register' %}" method="POST">
                                 {% csrf_token %}
-                                <div class="form-group my-4">
-                                    {{ form.first_name }}
-                                </div>
 
-                                <div class="form-group my-4">
-                                    {{ form.last_name }}
-                                </div>
+                                {{ form }}
 
-                                <div class="form-group my-4">
-                                    {{ form.email }}
-                                    <small id="emailHelp" class="form-text text-muted">Мы никогда никому не
-                                        передадим вашу электронную почту.</small>
-                                </div>
-
-                                <div class="form-group my-4">
-                                    {{ form.phone_number }}
-                                    <small id="phoneHelp" class="form-text text-muted">Мы никогда никому не
-                                        передадим ваш номер телефона.</small>
-                                </div>
-
-                                <div class="form-group my-4">
-                                    {{ form.password }}
-                                </div>
-                                <div class="form-group my-4">
-                                    {{ form.confirm_password }}
-                                </div>
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.first_name }}#}
+                                {#                                </div>#}
+                                {##}
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.last_name }}#}
+                                {#                                </div>#}
+                                {##}
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.email }}#}
+                                {#                                    <small id="emailHelp" class="form-text text-muted">Мы никогда никому не#}
+                                {#                                        передадим вашу электронную почту.</small>#}
+                                {#                                </div>#}
+                                {##}
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.phone_number }}#}
+                                {#                                    <small id="phoneHelp" class="form-text text-muted">Мы никогда никому не#}
+                                {#                                        передадим ваш номер телефона.</small>#}
+                                {#                                </div>#}
+                                {##}
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.password }}#}
+                                {#                                </div>#}
+                                {#                                <div class="form-group my-4">#}
+                                {#                                    {{ form.confirm_password }}#}
+                                {#                                </div>#}
                                 {% if form.non_field_errors %}
                                     <div class="card bg-light my-3">
                                         {% for error in form.non_field_errors %}
                                             <h5 class="my-2">{{ error }}</h5>
                                         {% endfor %}
                                     </div>
-
                                 {% endif %}
                                 <button class="btn btn-outline-dark btn-lg px-5" type="submit">Регистрация</button>
                             </form>
@@ -60,15 +62,12 @@
                                 <a href="#!" class="text-black"><i class="fab fa-google fa-lg"></i></a>
                             </div>
 
-                         <div>
-                            <p class="mb-0 mt-3">Уже есть учетная запись?
-                                <a href="{% url 'login' %}" class="text-black-50 fw-bold">Sign In</a>
-                            </p>
+                            <div>
+                                <p class="mb-0 mt-3">Уже есть учетная запись?
+                                    <a href="{% url 'login' %}" class="text-black-50 fw-bold">Sign In</a>
+                                </p>
+                            </div>
                         </div>
-
-                        </div>
-
-
 
                     </div>
                 </div>

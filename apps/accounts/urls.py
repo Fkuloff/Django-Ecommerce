@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import register, login, logout, activate, dashboard, forgot_password, reset_password_validate, reset_password, \
+from .views import register, login, logout, activate, dashboard, forgot_password, reset_password_validate, \
+    reset_password, \
     my_orders, change_password, order_detail, edit_profile
 
 urlpatterns = [

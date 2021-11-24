@@ -28,8 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
+# CELERY
+CELERY_TIMEZONE = "Europe/Moscow"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
 
     'nested_admin',
     'phonenumber_field',
+    'django_celery_results',
 
     'apps.main',
     'apps.category',
@@ -48,6 +54,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'apps.order',
     'apps.review',
+    'apps.celeryapp',
 
 ]
 
@@ -154,6 +161,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-# TODO
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
